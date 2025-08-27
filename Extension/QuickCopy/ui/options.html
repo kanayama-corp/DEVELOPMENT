@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QuickCopy 設定</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    h1, h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+    .setting-group { margin-bottom: 20px; }
+    .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    textarea { width: 100%; min-height: 80px; box-sizing: border-box; }
+    button { padding: 10px 15px; cursor: pointer; }
+    #status { margin-left: 15px; color: green; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1>QuickCopy 設定</h1>
+
+  <div class="setting-group">
+    <h2>全般</h2>
+    <div class="setting-row">
+      <label for="autoCopy">自動コピーを有効化</label>
+      <input type="checkbox" id="autoCopy">
+    </div>
+  </div>
+
+  <div class="setting-group">
+    <h2>イベント</h2>
+    <div class="setting-row">
+      <label for="eventDrag">ドラッグ選択でコピー (マウスアップ時)</label>
+      <input type="checkbox" id="eventDrag">
+    </div>
+    <div class="setting-row">
+      <label for="eventDblclick">ダブルクリックでコピー</label>
+      <input type="checkbox" id="eventDblclick">
+    </div>
+    <div class="setting-row">
+      <label for="eventTripleclick">トリプルクリックでコピー</label>
+      <input type="checkbox" id="eventTripleclick">
+    </div>
+  </div>
+
+  <div class="setting-group">
+    <h2>テキスト整形</h2>
+    <div class="setting-row">
+      <label for="trimWhitespace">先頭/末尾の空白を削除</label>
+      <input type="checkbox" id="trimWhitespace">
+    </div>
+    <div class="setting-row">
+      <label for="collapseWhitespace">連続する空白を1つにまとめる</label>
+      <input type="checkbox" id="collapseWhitespace">
+    </div>
+    <div class="setting-row">
+      <label for="newlineToSpace">改行をスペースに変換</label>
+      <input type="checkbox" id="newlineToSpace">
+    </div>
+     <div class="setting-row">
+      <label for="decodeUrls">URLエンコードされたテキストをデコード</label>
+      <input type="checkbox" id="decodeUrls">
+    </div>
+  </div>
+
+  <div class="setting-group">
+      <h2>動作</h2>
+      <div class="setting-row">
+        <label for="minLength">コピーする最小文字数</label>
+        <input type="number" id="minLength" min="1" style="width: 50px;">
+      </div>
+      <div class="setting-row">
+        <label for="excludeInputs">入力欄（テキストボックス等）では自動コピーしない</label>
+        <input type="checkbox" id="excludeInputs">
+      </div>
+      <div class="setting-row">
+        <label for="deduplication">同じテキストの連続コピーを防止</label>
+        <input type="checkbox" id="deduplication">
+      </div>
+  </div>
+
+  <div class="setting-group">
+    <h2>ドメイン管理</h2>
+    <p>デフォルトでは、拡張機能はすべてのサイトで有効です。特定のサイトで無効にするには、ドメインをブロックリストに追加してください。</p>
+    <label for="blockedDomains">ブロックするドメイン (1行に1つ)</label>
+    <textarea id="blockedDomains"></textarea>
+  </div>
+
+  <button id="save">設定を保存</button>
+  <span id="status"></span>
+
+  <script src="options.js"></script>
+</body>
+</html>

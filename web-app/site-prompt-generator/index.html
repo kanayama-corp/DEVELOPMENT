@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サイト類似プロンプト生成ツール</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 要件定義書生成ツール</h1>
+            <p>参考サイトのURLを入力して、要件定義書とAI開発用プロンプトを自動生成</p>
+        </header>
+
+        <main>
+            <section class="url-input-section">
+                <h2>📝 参考サイトURL入力（最大5つ）</h2>
+                <div class="url-inputs">
+                    <div class="url-input-group">
+                        <input type="url" id="url1" placeholder="https://example.com" class="url-input">
+                    </div>
+                    <div class="url-input-group">
+                        <input type="url" id="url2" placeholder="https://example.com" class="url-input">
+                    </div>
+                    <div class="url-input-group">
+                        <input type="url" id="url3" placeholder="https://example.com" class="url-input">
+                    </div>
+                    <div class="url-input-group">
+                        <input type="url" id="url4" placeholder="https://example.com" class="url-input">
+                    </div>
+                    <div class="url-input-group">
+                        <input type="url" id="url5" placeholder="https://example.com" class="url-input">
+                    </div>
+                </div>
+                <button class="generate-btn" onclick="analyzeAllUrls()">🔍 一括解析・要件定義書生成</button>
+            </section>
+
+            <section class="prompt-section">
+                <h2>📋 生成された要件定義書</h2>
+                <div class="prompt-container">
+                    <div class="prompt-content">
+                        <div class="requirements-display">
+                            <textarea id="requirements-text" readonly placeholder="要件定義書がここに生成されます..."></textarea>
+                            <button class="copy-btn" onclick="copyPrompt('requirements')">📋 コピー</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2025 要件定義書生成ツール - Windsurf & Cursor対応</p>
+        </footer>
+    </div>
+
+    <div id="notification" class="notification"></div>
+    <script src="script.js"></script>
+</body>
+</html>

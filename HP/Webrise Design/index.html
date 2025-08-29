@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebBuild - Professional Website Creation Service</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">WebBuild</div>
+        <nav class="nav">
+          <a href="#features">特徴</a>
+          <a href="#pricing">料金</a>
+          <a href="#contact">お問い合わせ</a>
+        </nav>
+        <button class="menu-toggle" aria-label="メニュー" aria-expanded="false">☰</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <h1>プロ品質のWebサイト制作</h1>
+          <p>高速・モダン・SEOに強いサイトを、明快な価格で。</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">無料相談する</a>
+            <a class="btn btn-secondary" href="#pricing">料金を見る</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="container grid-3">
+          <div class="card">
+            <h3>スピード</h3>
+            <p>軽量構成で高速表示。ユーザー体験とCVR向上に貢献します。</p>
+          </div>
+          <div class="card">
+            <h3>デザイン</h3>
+            <p>ブランドに合わせた洗練デザイン。スマホ最適化は標準対応。</p>
+          </div>
+          <div class="card">
+            <h3>運用性</h3>
+            <p>更新しやすい構成と丁寧なドキュメントで、運用も安心。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" class="section alt">
+        <div class="container">
+          <h2>料金プラン</h2>
+          <div class="plans">
+            <div class="plan">
+              <h3>ライト</h3>
+              <p class="price">¥99,000〜</p>
+              <ul>
+                <li>1〜3ページ</li>
+                <li>レスポンシブ対応</li>
+                <li>納期 1〜2週間</li>
+              </ul>
+            </div>
+            <div class="plan featured">
+              <h3>スタンダード</h3>
+              <p class="price">¥198,000〜</p>
+              <ul>
+                <li>最大5ページ</li>
+                <li>フォーム設置</li>
+                <li>基本SEO</li>
+              </ul>
+            </div>
+            <div class="plan">
+              <h3>プロ</h3>
+              <p class="price">¥398,000〜</p>
+              <ul>
+                <li>カスタム機能</li>
+                <li>高速最適化</li>
+                <li>追加サポート</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <h2>お問い合わせ</h2>
+          <form class="contact-form" name="contact">
+            <div class="form-row">
+              <label>お名前
+                <input type="text" name="name" required />
+              </label>
+              <label>メールアドレス
+                <input type="email" name="email" required />
+              </label>
+            </div>
+            <label>ご相談内容
+              <textarea name="message" rows="5" required></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary">送信する</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 WebBuild. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eclat（エクラ） | [地名]のプライベートヘアサロン</title>
+    <meta name="description" content="Eclat（エクラ）は“輝き”。落ち着いた空間で、あなた本来の美しさを丁寧に引き出します。うねり、広がり、ダメージが気になる髪へ、上質なケアと癒やしの時間をご提供します。">
+    <meta name="keywords" content="[地名] 美容室, [地名] カット カラー, 落ち着いた, 大人サロン, 髪質改善, ヘッドスパ, プライベートサロン">
+    
+    <!-- OGP -->
+    <meta property="og:title" content="Eclat（エクラ） | [地名]のプライベートヘアサロン">
+    <meta property="og:description" content="落ち着いた空間で、あなた本来の美しさを丁寧に引き出します。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com">
+    <meta property="og:image" content="https://placehold.co/1200x630/F7F3EE/3E372F?text=Eclat%0AHAIR%20SALON">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Internal CSS and Tailwind Config -->
+    <style>
+        /* カスタムスタイル */
+        :root {
+            --bg-color: #F7F3EE;
+            --text-dark: #3E372F;
+            --accent-color: #C7A27E;
+            --accent-hover: #b58f6a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: 'Inter', 'Noto Serif JP', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* セクション背景色 */
+        .bg-beige-light {
+            background-color: #F7F3EE;
+        }
+        
+        .bg-beige-lighter {
+            background-color: #FAFAF8;
+        }
+        
+
+        
+        /* clamp()による流体タイポグラフィ */
+        h1, .h1 { font-size: clamp(2.625rem, 1.2857rem + 5.7143vw, 4.25rem); } /* 42px -> 68px */
+        h2, .h2 { font-size: clamp(1.625rem, 1.25rem + 1.6vw, 2.625rem); } /* 26px -> 42px */
+        h3, .h3 { font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem); } /* 20px -> 26px */
+
+        .font-serif { font-family: 'Noto Serif JP', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            border: 2px solid var(--accent-color);
+            color: var(--text-dark);
+            font-weight: 600;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            transition: .3s;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: auto;
+            width: 0;
+            height: 100%;
+            background-color: var(--accent-color);
+            z-index: -1;
+            transition: .3s;
+        }
+        
+        .btn:hover {
+            transition: .3s;
+            color: white;
+        }
+        
+        .btn:hover:before {
+            width: 100%;
+        }
+        
+        /* FAQアコーディオン */
+        .faq-item details > summary {
+            list-style: none;
+        }
+        .faq-item details > summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item details[open] .plus-icon {
+            transform: rotate(45deg);
+        }
+        
+        /* フェードインアニメーション */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Heroアニメーション */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 1.2s ease-out;
+        }
+        
+        /* シネマグラフ - 髪の動きアニメーション */
+        .cinemagraph-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hair-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: heroFadeIn 2s ease-out forwards;
+        }
+        
+        .hair-animated {
+            animation: hairFlow 4s ease-in-out infinite alternate;
+            transform-origin: top center;
+        }
+        
+        .hair-strand-1 {
+            animation-delay: 0.3s;
+        }
+        
+        .hair-strand-2 {
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes hairFlow {
+            0% {
+                transform: translateX(0px) rotate(0deg) scale(1);
+                filter: blur(0px);
+            }
+            25% {
+                transform: translateX(2px) rotate(0.5deg) scale(1.002);
+                filter: blur(0.2px);
+            }
+            50% {
+                transform: translateX(1px) rotate(-0.3deg) scale(1.001);
+                filter: blur(0.1px);
+            }
+            75% {
+                transform: translateX(-1px) rotate(0.2deg) scale(1.001);
+                filter: blur(0.15px);
+            }
+            100% {
+                transform: translateX(-2px) rotate(-0.5deg) scale(1.002);
+                filter: blur(0px);
+            }
+        }
+        
+
+        
+        /* シンプルな縦型メニュー */
+        .vertical-nav {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            z-index: 30;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 30px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            min-width: 200px;
+        }
+        
+
+        
+        .vertical-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .vertical-nav li {
+            margin: 0;
+        }
+        
+        .vertical-nav a {
+            display: block;
+            padding: 16px 24px;
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+
+        
+        .vertical-nav a:hover {
+            color: #C7A27E;
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #C7A27E;
+        }
+        
+        .vertical-nav a.active {
+            color: #C7A27E;
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: #C7A27E;
+            font-weight: 400;
+        }
+        
+        /* メニュー内ロゴ */
+        .menu-logo {
+            padding: 0 24px 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .vertical-nav .logo-link {
+            display: block;
+            text-decoration: none;
+            color: white !important;
+            font-size: 24px;
+            font-family: serif;
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-align: center;
+            text-transform: none !important;
+            cursor: default;
+        }
+        
+        .vertical-nav .logo-link:hover,
+        .vertical-nav .logo-link:focus,
+        .vertical-nav .logo-link:active {
+            color: white !important;
+            background: none !important;
+            border-left-color: transparent !important;
+        }
+        
+
+        
+        /* モバイルでは非表示 */
+        @media (max-width: 1024px) {
+            .vertical-nav {
+                display: none;
+            }
+        }
+        
+        /* 髪の毛の個別レイヤー */
+        .hair-strand-1 {
+            animation: hairStrand1 3.5s ease-in-out infinite alternate;
+            animation-delay: 0.2s;
+        }
+        
+        .hair-strand-2 {
+            animation: hairStrand2 4.2s ease-in-out infinite alternate;
+            animation-delay: 0.8s;
+        }
+        
+        @keyframes hairStrand1 {
+            0%, 100% {
+                transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateX(1.5px) translateY(-0.5px) rotate(0.3deg);
+            }
+        }
+        
+        @keyframes hairStrand2 {
+            0%, 100% {
+                transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateX(-1px) translateY(0.5px) rotate(-0.2deg);
+            }
+        }
+        
+        /* 画像モーダル */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .image-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 5px;
+            transition: opacity 0.3s;
+        }
+        
+        .modal-close:hover {
+            opacity: 0.7;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* ヒーローセクション フェードインアニメーション */
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+    </style>
+    
+    <script>
+      // Tailwind CSSのコンフィグ
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'custom-bg': '#F7F3EE',
+              'text-dark': '#3E372F',
+              'accent-color': '#C7A27E',
+              'accent-hover': '#b58f6a',
+            },
+            fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                serif: ['Noto Serif JP', 'serif'],
+            },
+            spacing: {
+                // 8pxスケールと黄金比
+                'space-xs': 'calc(8px * 1)',       // 8px
+                'space-sm': 'calc(8px * 1.618)',    // ~13px
+                'space-md': 'calc(8px * 2.618)',    // ~21px
+                'space-lg': 'calc(8px * 4.236)',    // ~34px
+                'space-xl': 'calc(8px * 6.854)',    // ~55px
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-custom-bg text-text-dark font-sans">
+
+
+
+    <!-- 縦型ナビゲーションメニュー -->
+    <nav class="vertical-nav">
+        <div class="menu-logo">
+            <a href="#" class="logo-link">Eclat</a>
+        </div>
+        <ul>
+            <li><a href="#concept" data-section="concept">CONCEPT</a></li>
+            <li><a href="#stylist" data-section="stylist">STYLISTS</a></li>
+            <li><a href="#gallery" data-section="gallery">STYLE</a></li>
+            <li><a href="#menu" data-section="menu">MENU & PRICE</a></li>
+            <li><a href="#reviews" data-section="reviews">REVIEWS</a></li>
+            <li><a href="#access" data-section="access">ACCESS</a></li>
+            <li><a href="#faq" data-section="faq">FAQ</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Heroセクション -->
+        <section class="relative h-screen min-h-[700px] flex items-center overflow-hidden">
+            <!-- シネマグラフ背景 -->
+            <div class="absolute inset-0 z-0 cinemagraph-container">
+                <!-- ベース人物画像 -->
+                <div class="hair-layer" 
+                     style="background-image: url('./image/hero.jpg');"></div>
+                
+                <!-- アニメーションする髪のレイヤー1 -->
+                <div class="hair-layer hair-animated hair-strand-1" 
+                     style="background-image: url('./image/hero.jpg'); 
+                            mask: linear-gradient(to bottom, transparent 0%, transparent 20%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.7) 50%, transparent 80%); 
+                            -webkit-mask: linear-gradient(to bottom, transparent 0%, transparent 20%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.7) 50%, transparent 80%);"></div>
+                
+                <!-- アニメーションする髪のレイヤー2 -->
+                <div class="hair-layer hair-animated hair-strand-2" 
+                     style="background-image: url('./image/hero.jpg'); 
+                            mask: linear-gradient(45deg, transparent 0%, transparent 25%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.6) 60%, transparent 75%); 
+                            -webkit-mask: linear-gradient(45deg, transparent 0%, transparent 25%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.6) 60%, transparent 75%);"></div>
+                
+                <!-- オーバーレイ -->
+                <div class="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30"></div>
+            </div>
+            
+            <!-- コンテンツ -->
+            <div class="relative z-10 container mx-auto px-6 md:px-12 lg:px-24">
+                <div class="max-w-3xl">
+                    <div class="animate-fade-in-up">
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-light leading-tight tracking-wider text-white mb-6">
+                            髪が変われば、<br>
+                            気持ちも変わる。
+                        </h1>
+                        <p class="text-lg md:text-xl leading-relaxed text-white/90 mb-8 max-w-2xl">
+                            Eclat（エクラ）は"輝き"。<br>
+                            落ち着いた空間で、あなた本来の美しさを丁寧に引き出します。
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="#booking" class="bg-accent-color text-white px-8 py-4 text-lg font-light tracking-wide hover:bg-accent-hover transition-all duration-300 transform hover:scale-105">
+                                空き枠を確認する
+                            </a>
+                            <a href="#menu" class="border-2 border-white text-white px-8 py-4 text-lg font-light tracking-wide hover:bg-white hover:text-text-dark transition-all duration-300">
+                                メニューを見る
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- スクロールインジケーター -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+                <div class="animate-bounce">
+                    <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- コンセプトセクション -->
+        <section id="concept" class="py-space-xl px-4 bg-beige-lighter">
+            <div class="container mx-auto text-center max-w-4xl">
+                <h2 class="h2 font-serif fade-in tracking-widest">CONCEPT</h2>
+                <div class="h-0.5 bg-accent-color mx-auto mt-0 mb-space-lg" style="width: 8.5em;"></div>
+                
+                <div class="space-y-space-md fade-in">
+                    <p class="text-lg leading-relaxed">
+                        Eclat（エクラ）とは、フランス語で「輝き」。<br>
+                        お客様一人ひとりが持つ、内なる輝きを最大限に引き出すこと。<br>
+                        それが私たちの使命です。
+                    </p>
+                    
+                    <p class="text-base leading-loose mt-space-lg">
+                        経験豊富なスタイリストが、丁寧なカウンセリングを通して、あなたの「なりたい」を形にします。<br>
+                        落ち着いたプライベート空間で、日常を忘れるほどの癒やしと、新しい自分に出会う感動をご提供します。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- スタイリスト紹介セクション -->
+        <section id="stylist" class="py-space-xl px-8 md:px-16 lg:px-24 bg-beige-light">
+            <div class="container mx-auto">
+                <h2 class="h2 font-serif text-center fade-in">STYLISTS</h2>
+                <div class="h-0.5 bg-accent-color mx-auto mt-0 mb-space-lg" style="width: 7em;"></div>
+                
+                <div class="grid md:grid-cols-3 gap-space-lg fade-in max-w-4xl mx-auto">
+                    <!-- Stylist 1 -->
+                    <div class="text-center">
+                        <div class="w-32 h-32 mx-auto mb-4">
+                            <img src="./image/21.jpg" alt="スタイリスト 山田 花子" class="w-full h-full object-cover rounded-full border-2 border-accent-color/30">
+                        </div>
+                        <h3 class="text-lg font-semibold">田中 美奈 <span class="text-sm font-normal block mt-1">Mina Tanaka</span></h3>
+                        <p class="text-accent-color text-sm mt-1">オーナー / スタイリスト</p>
+                        <p class="mt-space-sm text-center leading-loose text-sm">
+                            得意なスタイルは、乾かすだけでまとまる再現性の高いショート〜ボブスタイル。髪質やくせを活かした、あなただけのデザインをご提案します。
+                        </p>
+                    </div>
+                    <!-- Stylist 2 -->
+                    <div class="text-center">
+                        <div class="w-32 h-32 mx-auto mb-4">
+                            <img src="./image/22.jpg" alt="スタイリスト 佐藤 健太" class="w-full h-full object-cover rounded-full border-2 border-accent-color/30">
+                        </div>
+                        <h3 class="text-lg font-semibold">佐藤 健太 <span class="text-sm font-normal block mt-1">Kenta Sato</span></h3>
+                        <p class="text-accent-color text-sm mt-1">スタイリスト</p>
+                        <p class="mt-space-sm text-center leading-loose text-sm">
+                            透明感のあるカラーや、ハイライトを活かしたデザインが得意です。お客様の肌色や雰囲気に合わせた、パーソナルなカラーをご提案いたします。
+                        </p>
+                    </div>
+                    <!-- Stylist 3 -->
+                    <div class="text-center">
+                        <div class="w-32 h-32 mx-auto mb-4">
+                            <img src="./image/23.jpg" alt="スタイリスト 鈴木 美咲" class="w-full h-full object-cover rounded-full border-2 border-accent-color/30">
+                        </div>
+                        <h3 class="text-lg font-semibold">高橋 大輔 <span class="text-sm font-normal block mt-1">Daisuke Takahashi</span></h3>
+                        <p class="text-accent-color text-sm mt-1">スタイリスト</p>
+                        <p class="mt-space-sm text-center leading-loose text-sm">
+                            ロングヘアのメンテナンスや、癒やしのヘッドスパはお任せください。頭皮から健康な髪を育むためのアドバイスもさせていただきます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STYLEセクション -->
+        <section id="gallery" class="py-space-xl px-8 md:px-16 lg:px-24 bg-beige-lighter">
+            <div class="container mx-auto">
+                <h2 class="h2 font-serif text-center fade-in tracking-widest">STYLE</h2>
+                <div class="h-0.5 bg-accent-color mx-auto mt-0 mb-space-lg" style="width: 5.5em;"></div>
+                
+                <!-- マソニーレイアウト -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 fade-in max-w-6xl mx-auto">
+                    <!-- 第1列 -->
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="aspect-[3/4]">
+                            <img src="./image/1.jpeg" alt="ヘアスタイル1" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                        <div class="aspect-square">
+                            <img src="./image/2.jpeg" alt="ヘアスタイル2" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                        <div class="aspect-[4/3]">
+                            <img src="./image/3.jpeg" alt="ヘアスタイル3" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- 第2列 -->
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="aspect-square">
+                            <img src="./image/4.jpeg" alt="ヘアスタイル4" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                        <div class="aspect-[4/5]">
+                            <img src="./image/5.jpeg" alt="ヘアスタイル5" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                        <div class="aspect-[4/3]">
+                            <img src="./image/6.jpeg" alt="ヘアスタイル6" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- 第3列 -->
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="aspect-[4/3]">
+                            <img src="./image/7.jpeg" alt="ヘアスタイル7" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                        <div class="aspect-[3/4]">
+                            <img src="./image/8.jpeg" alt="ヘアスタイル8" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                        <div class="aspect-square">
+                            <img src="./image/9.jpeg" alt="ヘアスタイル9" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- 第4列 -->
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="aspect-[4/5]">
+                            <img src="./image/10.jpeg" alt="ヘアスタイル10" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                        <div class="aspect-square bg-cover bg-center cursor-pointer rounded-lg" style="background-image: url('./image/11.jpeg');" onclick="openModal('./image/11.jpeg', 'ヘアスタイル11')">
+                        </div>
+                        <div class="aspect-[4/3]">
+                            <img src="./image/12.jpeg" alt="ヘアスタイル12" class="w-full h-full object-cover cursor-pointer rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- メニュー・料金表セクション -->
+        <section id="menu" class="py-space-xl px-8 md:px-16 lg:px-24 bg-beige-light">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="h2 font-serif text-center fade-in tracking-widest">MENU & PRICE</h2>
+                <div class="h-0.5 bg-accent-color mx-auto mt-2 mb-space-xl" style="width: 14em;"></div>
+                
+                <div class="fade-in space-y-space-xl">
+                    <!-- Cutセクション -->
+                    <div>
+                        <h3 class="text-2xl font-serif mb-space-md pb-2 border-b border-accent-color/50">Cut</h3>
+                        <div class="space-y-space-md">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">デザインカット</h4>
+                                    <p class="text-sm text-gray-600 mt-1">シャンプー・ブロー込</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥6,600</span>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">前髪カット</h4>
+                                </div>
+                                <span class="text-lg font-semibold">￥1,100</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Colorセクション -->
+                    <div>
+                        <h3 class="text-2xl font-serif mb-space-md pb-2 border-b border-accent-color/50">Color</h3>
+                        <div class="space-y-space-md">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">オーガニックカラー</h4>
+                                    <p class="text-sm text-gray-600 mt-1">髪と頭皮に優しいカラー</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥8,800</span>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">イルミナカラー</h4>
+                                    <p class="text-sm text-gray-600 mt-1">透明感とツヤ感を表現</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥9,900</span>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">ダブルカラー</h4>
+                                    <p class="text-sm text-gray-600 mt-1">ハイトーンやビビッドな色に</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥16,500</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Permセクション -->
+                    <div>
+                        <h3 class="text-2xl font-serif mb-space-md pb-2 border-b border-accent-color/50">Perm</h3>
+                        <div class="space-y-space-md">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">デザインパーマ</h4>
+                                    <p class="text-sm text-gray-600 mt-1">再現性の高いスタイルを</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥8,800</span>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">デジタルパーマ</h4>
+                                    <p class="text-sm text-gray-600 mt-1">コテで巻いたような仕上がり</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥13,200</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Treatmentセクション -->
+                    <div>
+                        <h3 class="text-2xl font-serif mb-space-md pb-2 border-b border-accent-color/50">Treatment</h3>
+                        <div class="space-y-space-md">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">オージュアトリートメント</h4>
+                                    <p class="text-sm text-gray-600 mt-1">髪質に合わせたオーダーメイドケア</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥5,500</span>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-lg font-medium">酸熱トリートメント</h4>
+                                    <p class="text-sm text-gray-600 mt-1">髪質改善、究極のツヤ髪へ</p>
+                                </div>
+                                <span class="text-lg font-semibold">￥11,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-center mt-space-lg text-sm text-gray-600 fade-in">
+                    ※ 全ての価格は税込表記です。
+                </p>
+            </div>
+        </section>
+
+
+
+        <!-- お客様の声セクション -->
+        <section id="reviews" class="py-space-xl px-8 md:px-16 lg:px-24 bg-beige-lighter">
+            <div class="container mx-auto">
+                <h2 class="h2 font-serif text-center fade-in">REVIEWS</h2>
+                <div class="h-0.5 bg-accent-color mx-auto mt-0 mb-space-lg" style="width: 7em;"></div>
+                
+                <div class="grid md:grid-cols-3 gap-6 md:gap-8 fade-in max-w-4xl mx-auto">
+                    <div class="aspect-square p-space-md border border-accent-color/30 rounded-lg bg-white flex flex-col justify-center">
+                        <p class="leading-relaxed text-sm">"初めて伺いましたが、カウンセリングがとても丁寧で安心しました。髪の悩みを親身に聞いてくださり、仕上がりも大満足です。"</p>
+                        <p class="text-right mt-space-sm font-semibold text-sm">30代・女性</p>
+                    </div>
+                    <div class="aspect-square p-space-md border border-accent-color/30 rounded-lg bg-white flex flex-col justify-center">
+                        <p class="leading-relaxed text-sm">"静かな空間でリラックスできました。ヘッドスパが気持ちよくて、髪もサラサラに。また自分へのご褒美に利用したいです。"</p>
+                        <p class="text-right mt-space-sm font-semibold text-sm">40代・女性</p>
+                    </div>
+                    <div class="aspect-square p-space-md border border-accent-color/30 rounded-lg bg-white flex flex-col justify-center">
+                        <p class="leading-relaxed text-sm">"うねりと広がりが悩みでしたが、髪質改善トリートメントでまとまりやすくなりました。朝のスタイリングが楽です！"</p>
+                        <p class="text-right mt-space-sm font-semibold text-sm">30代・女性</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+
+        <!-- アクセスセクション -->
+        <section id="access" class="py-24 md:py-32 lg:py-40 px-8 md:px-16 lg:px-24 bg-beige-light">
+            <div class="container mx-auto grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-center fade-in">
+                <div>
+                    <!-- Google Maps埋め込み -->
+                    <div class="relative w-full h-96 md:h-[450px] lg:h-[500px] rounded-lg overflow-hidden border border-accent-color/20">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.747707533413!2d139.70993931525394!3d35.64669098019625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b563b00109f%3A0x337328def1e2ab26!2z5oGV5q-U5a-_6aeF!5e0!3m2!1sja!2sjp!4v1640995200000!5m2!1sja!2sjp"
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="rounded-lg">
+                        </iframe>
+                    </div>
+                </div>
+                <div class="md:pl-8">
+                    <h2 class="h2 font-serif mb-space-md">ACCESS</h2>
+                    <div class="h-0.5 bg-accent-color mb-space-md" style="width: 6em;"></div>
+                    <div class="space-y-4">
+                        <p><strong>住所:</strong> 東京都渋谷区恵比寿X-X-X ABCビル2F</p>
+                        <p><strong>アクセス:</strong> JR恵比寿駅 西口より徒歩5分</p>
+                        <p><strong>駐車場:</strong> 近隣のコインパーキングをご利用ください</p>
+                        <p><strong>営業時間:</strong> 10:00 - 20:00 (最終受付 19:00)</p>
+                        <p><strong>定休日:</strong> 毎週火曜日、第1・3月曜日</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQセクション -->
+        <section id="faq" class="py-space-xl px-4 bg-beige-lighter">
+            <div class="container mx-auto max-w-3xl">
+                <h2 class="h2 font-serif text-center mb-space-lg fade-in">FAQ</h2>
+                <div class="space-y-4 fade-in">
+                    <div class="faq-item border-b border-accent-color/30 py-4">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer">
+                                <span class="font-semibold">予約は必要ですか？</span>
+                                <span class="plus-icon text-2xl transition-transform duration-300">+</span>
+                            </summary>
+                            <p class="mt-4 leading-relaxed">はい、当店は完全予約制となっております。お一人様ずつ丁寧に対応させていただくため、LINEまたはお電話にて事前の予約をお願いいたします。</p>
+                        </details>
+                    </div>
+                    <div class="faq-item border-b border-accent-color/30 py-4">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer">
+                                <span class="font-semibold">クレジットカードは使えますか？</span>
+                                <span class="plus-icon text-2xl transition-transform duration-300">+</span>
+                            </summary>
+                            <p class="mt-4 leading-relaxed">はい、各種クレジットカード（VISA, MasterCard, JCB, American Express, Diners Club）および、交通系電子マネー、QRコード決済（PayPay, LINE Pay）に対応しております。</p>
+                        </details>
+                    </div>
+                    <div class="faq-item border-b border-accent-color/30 py-4">
+                        <details>
+                            <summary class="flex justify-between items-center cursor-pointer">
+                                <span class="font-semibold">子供を連れて行っても良いですか？</span>
+                                <span class="plus-icon text-2xl transition-transform duration-300">+</span>
+                            </summary>
+                            <p class="mt-4 leading-relaxed">静かな空間を大切にしているため、大変申し訳ございませんが、お子様連れでのご来店はご遠慮いただいております。ご理解のほどよろしくお願いいたします。</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTAセクション -->
+        <section id="booking" class="py-space-xl px-4 text-center bg-beige-light">
+            <div class="container mx-auto fade-in">
+                <h2 class="h2 font-serif">ご予約はこちらから</h2>
+                <p class="mt-space-md max-w-xl mx-auto leading-relaxed">
+                    お会いできるのを心より楽しみにしております。<br>
+                    髪のお悩みなど、お気軽にご相談ください。
+                </p>
+                <div class="mt-space-lg">
+                    <a href="#" class="btn px-12 py-5 text-xl">LINEで空き状況を確認する</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- フッター -->
+    <footer class="bg-text-dark text-custom-bg py-space-lg px-4">
+        <div class="container mx-auto text-center">
+            <a href="#" class="text-2xl font-bold font-serif tracking-wider">Eclat</a>
+            <div class="flex justify-center space-x-6 my-6">
+                <a href="#" class="hover:opacity-75 transition-opacity">Instagram</a>
+                <a href="#" class="hover:opacity-75 transition-opacity">Facebook</a>
+            </div>
+            <p class="text-xs">&copy; 2024 Eclat Hair Salon. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Sticky予約ボタン (モバイルのみ) -->
+    <a href="#booking" class="md:hidden fixed bottom-4 right-4 z-20 btn rounded-full shadow-lg w-32 h-16 flex items-center justify-center text-sm" style="padding-top: 0.25rem;">
+        BOOK NOW
+    </a>
+
+    <!-- 画像モーダル -->
+    <div id="imageModal" class="image-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <img id="modalImage" class="modal-image" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- スムーススクロール ---
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // --- スクロールに応じたフェードインアニメーション ---
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('visible');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+            
+            // --- 画像モーダル機能 ---
+            const styleImages = document.querySelectorAll('#gallery img');
+            styleImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    openModal(this.src, this.alt);
+                });
+            });
+            
+            // --- パララックス効果 ---
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+            
+            function updateParallax() {
+                const scrollTop = window.pageYOffset;
+                
+                parallaxElements.forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    const elementTop = rect.top + scrollTop;
+                    const elementHeight = rect.height;
+                    const windowHeight = window.innerHeight;
+                    
+                    // 要素が表示範囲内にあるかチェック
+                    if (scrollTop + windowHeight > elementTop && scrollTop < elementTop + elementHeight) {
+                        const progress = (scrollTop + windowHeight - elementTop) / (windowHeight + elementHeight);
+                        let translateY = 0;
+                        
+                        if (element.classList.contains('parallax-slow')) {
+                            translateY = (progress - 0.5) * 50; // 遅い動き
+                        } else if (element.classList.contains('parallax-medium')) {
+                            translateY = (progress - 0.5) * 30; // 中程度の動き
+                        } else if (element.classList.contains('parallax-fast')) {
+                            translateY = (progress - 0.5) * 20; // 速い動き
+                        }
+                        
+                        element.style.transform = `translateY(${translateY}px)`;
+                    }
+                });
+            }
+            
+            // スクロールイベントリスナー
+            let ticking = false;
+            
+            function requestTick() {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            }
+            
+            function handleScroll() {
+                requestTick();
+                ticking = false;
+            }
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // 初期化
+            updateParallax();
+            
+            // --- 縦型メニューのアクティブ状態管理 ---
+            const verticalNavLinks = document.querySelectorAll('.vertical-nav a');
+            const sections = document.querySelectorAll('section[id]');
+            
+            function updateActiveNavItem() {
+                const scrollPos = window.scrollY + 100;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    
+                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                        verticalNavLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('data-section') === sectionId) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // スクロール時にアクティブ状態更新
+            window.addEventListener('scroll', updateActiveNavItem, { passive: true });
+            
+            // 初期状態設定
+            updateActiveNavItem();
+        });
+        
+        // モーダルを開く
+        function openModal(src, alt) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            
+            modalImage.src = src;
+            modalImage.alt = alt;
+            modal.classList.add('active');
+            
+            // ESCキーで閉じる
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+            
+            // 背景クリックで閉じる
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+        
+        // モーダルを閉じる
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
+
+

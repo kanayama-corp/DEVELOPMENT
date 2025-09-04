@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Webアプリ | REI's Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #F0F4F8;
+      --main-color: #FFFFFF;
+      --text-color: #333333;
+      --accent-color-1: #A0C4FF;
+      --accent-color-2: #BDB2FF;
+      --accent-color-3: #FFD6A5;
+      --shadow-color: rgba(0, 0, 0, 0.08);
+      --font-family: 'M PLUS Rounded 1c', sans-serif;
+    }
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-3));
+      color: var(--text-color);
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+    .container {
+      background: var(--main-color);
+      max-width: 1100px;
+      margin: 0 auto;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      padding: 28px;
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+    .brand { font-weight: 700; }
+    .back { text-decoration: none; color: #1A73E8; font-weight: 500; }
+    .title { font-size: 22px; font-weight: 700; margin: 10px 0 6px; }
+    .desc { color: #666; margin: 0 0 18px; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    .card { background: #fff; border: 1px solid #E9E9EF; border-radius: 18px; padding: 24px; box-shadow: 0 8px 22px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 14px; min-height: 320px; overflow: hidden; }
+    .thumb { aspect-ratio: 16/9; background: #F4F6FA; border-radius: 12px; display: grid; place-items: center; color: #9ba3af; font-size: 14px; border: 1px dashed #E2E8F0; margin: -24px -24px 12px -24px; }
+    .card h3 { font-size: 18px; margin: 0; }
+    .card p { font-size: 14px; color: #666; margin: 0; }
+    .actions { display: flex; gap: 10px; margin-top: auto; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 14px; border-radius: 12px; font-size: 14px; text-decoration: none; border: 1px solid #E5E7EB; color: #1f2937; background: #fff; }
+    .btn.primary { background: #FFF5E6; color: #D97706; border-color: #FFE8CC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">REI's Portfolio</div>
+      <a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> 戻る</a>
+    </div>
+    <h1 class="title">Webアプリ</h1>
+    <p class="desc">制作したWebアプリ（例）の一覧です。</p>
+
+    <section class="grid">
+      <article class="card">
+        <div class="thumb">Thumbnail</div>
+        <h3>Task Manager</h3>
+        <p>タスク管理アプリ。ドラッグ＆ドロップ対応。</p>
+        <div class="actions">
+          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="thumb">Thumbnail</div>
+        <h3>Expense Tracker</h3>
+        <p>支出管理とグラフ可視化。</p>
+        <div class="actions">
+          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="thumb">Thumbnail</div>
+        <h3>Note App</h3>
+        <p>Markdown対応のノートアプリ。</p>
+        <div class="actions">
+          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="thumb">Thumbnail</div>
+        <h3>Weather</h3>
+        <p>天気APIを使ったシンプルアプリ。</p>
+        <div class="actions">
+          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        </div>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

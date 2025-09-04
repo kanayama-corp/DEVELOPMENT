@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- 全体のスタイル --- */
+        :root {
+            --bg-color: #F0F4F8; /* 背景色 */
+            --main-color: #FFFFFF; /* カード背景色 */
+            --text-color: #333333; /* 基本テキスト色 */
+            --accent-color-1: #A0C4FF; /* アクセントカラー1 (薄い青) */
+            --accent-color-2: #BDB2FF; /* アクセントカラー2 (薄い紫) */
+            --accent-color-3: #FFD6A5; /* アクセントカラー3 (薄いオレンジ) */
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --font-family: 'M PLUS Rounded 1c', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-3));
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- メインコンテナ --- */
+        .container {
+            background-color: var(--main-color);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        /* --- プロフィールセクション --- */
+        .profile {
+            margin-bottom: 30px;
+        }
+
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-color-2);
+            box-shadow: 0 4px 15px rgba(189, 178, 255, 0.4);
+            margin-bottom: 15px;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 10px 0 5px;
+        }
+
+        .profile-bio {
+            font-size: 16px;
+            color: #666;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* --- リンクボタン --- */
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid transparent;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-btn i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 20px; /* アイコンの幅を固定 */
+        }
+
+        /* 各ボタンの配色 */
+        .link-btn.portfolio {
+            background-color: #E6F0FF; /* accent-color-1の薄い版 */
+            color: #1A73E8;
+        }
+        .link-btn.blog {
+            background-color: #EAE6FF; /* accent-color-2の薄い版 */
+            color: #6A1B9A;
+        }
+        .link-btn.github {
+            background-color: #F3F3F3;
+            color: #181717;
+        }
+        .link-btn.contact {
+            background-color: #FFF5E6; /* accent-color-3の薄い版 */
+            color: #D97706;
+        }
+        
+        /* --- SNSリンク --- */
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-link {
+            font-size: 24px;
+            color: #999;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent-color-2);
+            transform: scale(1.2);
+        }
+        
+        /* --- フッター --- */
+        footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- プロフィール情報 -->
+        <header class="profile">
+            <!-- プロフィール画像 -->
+            <img src="image/REI.png" alt="プロフィール写真" class="profile-img" onerror="this.onerror=null; this.src='https://placehold.co/120x120/E0E0E0/9E9E9E?text=No+Image';">
+            <!-- 名前 -->
+            <h1 class="profile-name">REI's Portfolio</h1>
+            <!-- 自己紹介文 -->
+            <p class="profile-bio">自動化や効率化が好きです。<br>主にプログラミングやAIを用いて作業を自動化しています。</p>
+        </header>
+
+        <!-- メインリンク -->
+        <main class="links-container">
+            <a href="works.html" class="link-btn portfolio">
+                <i class="fa-solid fa-desktop"></i>
+                <span>作成HP</span>
+            </a>
+            <a href="extensions.html" class="link-btn blog">
+                <i class="fa-solid fa-puzzle-piece"></i>
+                <span>拡張機能</span>
+            </a>
+            <a href="apps.html" class="link-btn github">
+                <i class="fa-solid fa-cubes"></i>
+                <span>Webアプリ</span>
+            </a>
+            <a href="#" class="link-btn contact">
+                <i class="fa-solid fa-envelope"></i>
+                <span>お問い合わせ</span>
+            </a>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 REI's Portfolio. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
+
+

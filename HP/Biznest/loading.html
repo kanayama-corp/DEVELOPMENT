@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading - 業務効率化支援サービス</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 背景のパーティクル効果 */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* メインローディングコンテナ */
+        .loading-container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* ロゴエリア */
+        .logo-area {
+            margin-bottom: 3rem;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            margin-bottom: 0.5rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #6c757d;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(102, 126, 234, 0.8), 0 0 40px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        /* 円形ローダー */
+        .circular-loader {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+        }
+
+        .loader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .loader-ring:nth-child(1) {
+            border-top: 3px solid #667eea;
+            animation-duration: 1.5s;
+        }
+
+        .loader-ring:nth-child(2) {
+            border-right: 3px solid #f093fb;
+            animation-duration: 2s;
+            animation-direction: reverse;
+        }
+
+        .loader-ring:nth-child(3) {
+            border-bottom: 3px solid #4facfe;
+            animation-duration: 2.5s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 中央のコア */
+        .loader-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #667eea 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* プログレスバー */
+        .progress-container {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #f093fb, #4facfe);
+            border-radius: 2px;
+            width: 0%;
+            animation: progress 2s ease-out forwards;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 1s infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* ローディングテキスト */
+        .loading-text {
+            color: #495057;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            animation: fadeInOut 1.5s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* グリッド背景 */
+        .grid-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(102, 126, 234, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(102, 126, 234, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 10s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* フェードアウト効果 */
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div>
+    <div class="particles"></div>
+    
+    <div class="loading-container">
+        <div class="logo-area">
+            <div class="logo-text">biznest</div>
+            <div class="subtitle">業務効率化支援</div>
+        </div>
+        
+        <div class="circular-loader">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-core"></div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="loading-text">システム初期化中...</div>
+    </div>
+
+    <script>
+        // パーティクル生成
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // ローディングテキストの変更
+        function updateLoadingText() {
+            const loadingText = document.querySelector('.loading-text');
+            const texts = [
+                'システム初期化中...',
+                'データベース接続中...',
+                'リソース読み込み中...',
+                '準備完了'
+            ];
+            
+            let currentIndex = 0;
+            const interval = setInterval(() => {
+                if (currentIndex < texts.length - 1) {
+                    loadingText.textContent = texts[currentIndex];
+                    currentIndex++;
+                } else {
+                    loadingText.textContent = texts[currentIndex];
+                    clearInterval(interval);
+                }
+            }, 500);
+        }
+
+        // ページ遷移
+        function redirectToMain() {
+            setTimeout(() => {
+                document.body.classList.add('fade-out');
+                setTimeout(() => {
+                    // ローディングページを見たことをsessionStorageに記録
+                    sessionStorage.setItem('hasSeenLoading', 'true');
+                    window.location.href = 'index.html';
+                }, 500);
+            }, 2000);
+        }
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            updateLoadingText();
+            redirectToMain();
+        });
+    </script>
+</body>
+</html>

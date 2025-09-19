@@ -7,5 +7,5 @@
     "default_popup": "popup.html",
     "default_title": "畳計算機"
   },
-  "permissions": []
+  "permissions": ["storage"]
 }

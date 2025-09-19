@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "畳計算機",
+  "version": "1.0",
+  "description": "mm入力で畳サイズを計算します",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "畳計算機"
+  },
+  "permissions": []
+}

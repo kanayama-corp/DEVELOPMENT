@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>平米→坪変換 設定</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <h1>平米→坪変換 設定</h1>
+
+    <div class="section">
+      <h2>キーボードショートカット</h2>
+      <p class="description">
+        拡張機能を開くためのショートカットキーを設定できます。<br>
+        設定後、Chromeの拡張機能管理画面でショートカットを変更することも可能です。
+      </p>
+
+      <div class="shortcut-info">
+        <label>現在のショートカット:</label>
+        <div class="current-shortcut" id="current-shortcut">Ctrl+Shift+T</div>
+      </div>
+
+      <button id="open-shortcuts" class="btn">Chrome設定でショートカットを変更</button>
+    </div>
+
+    <div class="section">
+      <h2>使用方法</h2>
+      <ul>
+        <li>平米数を入力すると、自動的に坪数に変換されます</li>
+        <li>📋ボタンをクリックして結果をコピーできます</li>
+        <li>設定したショートカットキーで素早くアクセスできます</li>
+        <li>拡張機能呼び出し時には入力欄がフォーカスされているのですぐに入力出来ます</li>
+        <li>坪数が表示されている状態でコピーのショートカットを押すと坪数がコピー出来ます</li>
+      </ul>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

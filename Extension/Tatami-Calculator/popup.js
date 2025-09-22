@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             div.appendChild(label);
             checkboxContainer.appendChild(div);
         });
+
     }
 
     function saveSettings() {
@@ -104,9 +105,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     loadSettings();
+
+    // 起動時に最初の入力フィールドにフォーカス
+    lengthInput.focus();
+
+    // エンターキーで次のフィールドに移動
+    lengthInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            widthInput.focus();
+        }
+    });
+
+    widthInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            // 最後のフィールドでエンターを押したら最初のフィールドに戻る
+            lengthInput.focus();
+        }
+    });
+
     lengthInput.addEventListener('input', calculateTatami);
     widthInput.addEventListener('input', calculateTatami);
     settingsBtn.addEventListener('click', openSettings);
     document.getElementById('saveBtn').addEventListener('click', saveSettings);
     document.getElementById('cancelBtn').addEventListener('click', cancelSettings);
+
+    // ショートカット設定画面を開く
+    document.getElementById('openShortcutSettings').addEventListener('click', function() {
+        chrome.tabs.create({
+            url: 'chrome://extensions/shortcuts'
+        });
+    });
 });

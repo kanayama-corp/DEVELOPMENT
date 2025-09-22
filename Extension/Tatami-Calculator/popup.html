@@ -28,12 +28,23 @@
         <!-- 設定画面 -->
         <div id="settingsView" style="display: none;">
             <div class="header">
-                <h2>計測方法設定</h2>
+                <h2>設定</h2>
             </div>
             <div class="settings-content">
                 <p class="settings-description">表示したい畳の計測方法を選択してください（複数選択可）：</p>
                 <div id="methodCheckboxes" class="checkbox-container">
                 </div>
+
+                <div class="shortcut-info">
+                    <h3>ショートカットキー</h3>
+                    <p class="settings-description">
+                        <strong>Ctrl+Shift+T</strong> (Mac: <strong>Cmd+Shift+T</strong>) で畳計算機を開けます。
+                    </p>
+                    <button id="openShortcutSettings" class="btn btn-secondary shortcut-settings-btn">
+                        ショートカット設定を開く
+                    </button>
+                </div>
+
                 <div class="button-group">
                     <button id="saveBtn" class="btn btn-primary">保存</button>
                     <button id="cancelBtn" class="btn btn-secondary">キャンセル</button>

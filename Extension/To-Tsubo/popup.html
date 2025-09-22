@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <button id="settings-btn" title="設定">⚙</button>
+    <div class="input-group">
+      <input type="number" id="sqm-input" placeholder="平米数を入力" step="0.01" min="0">
+    </div>
+    <div class="result">
+      <label>坪</label>
+      <div id="tsubo-result">-</div>
+      <button id="copy-btn" title="コピー">📋</button>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

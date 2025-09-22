@@ -45,7 +45,7 @@
     }
     .brand { font-weight: 700; }
     .back { text-decoration: none; color: #1A73E8; font-weight: 500; }
-    .title { font-size: 22px; font-weight: 700; margin: 10px 0 6px; }
+    .title { font-size: 44px; font-weight: 700; margin: 10px 0 6px; }
     .desc { color: #666; margin: 0 0 18px; }
 
     .grid {
@@ -60,7 +60,7 @@
       padding: 24px;
       box-shadow: 0 8px 22px rgba(0,0,0,0.08);
       display: flex; flex-direction: column; gap: 14px;
-      min-height: 320px;
+      min-height: 106px; /* reduced to about one-third */
       overflow: hidden; /* to clip edge-to-edge thumbnail with rounded corners */
     }
     .thumb {
@@ -73,6 +73,13 @@
       border: 1px dashed #E2E8F0;
       /* Make the thumbnail reach card edges by canceling card padding */
       margin: -24px -24px 12px -24px;
+    }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
     }
     .card h3 { font-size: 18px; margin: 0; }
     .card p { font-size: 14px; color: #666; margin: 0; }
@@ -92,41 +99,32 @@
       <a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> 戻る</a>
     </div>
     <h1 class="title">作成HP</h1>
-    <p class="desc">制作したWebサイトの一部を紹介します。</p>
 
     <section class="grid">
       <!-- 4カラムのカード例 -->
       <article class="card">
-        <div class="thumb">Thumbnail</div>
-        <h3>Corporate Site</h3>
-        <p>コーポレートサイトのデザインと実装。</p>
-        <div class="actions">
-          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        <div class="thumb">
+          <img src="image/HP-1.jpg" alt="カメラマンサイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-1.jpg+not+found';">
         </div>
+        <h3 style="text-align: center;">カメラマンサイト</h3>
       </article>
       <article class="card">
-        <div class="thumb">Thumbnail</div>
-        <h3>Landing Page</h3>
-        <p>LPの構成・コピー・実装まで。</p>
-        <div class="actions">
-          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        <div class="thumb">
+          <img src="image/HP-2.jpg" alt="インテリアコーディネーターサイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-2.jpg+not+found';">
         </div>
+        <h3 style="text-align: center;">インテリアコーディネーターサイト</h3>
       </article>
       <article class="card">
-        <div class="thumb">Thumbnail</div>
-        <h3>Product Site</h3>
-        <p>製品紹介サイト。アニメーション演出。</p>
-        <div class="actions">
-          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        <div class="thumb">
+          <img src="image/HP-3.jpg" alt="ヘッドスパサイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-3.jpg+not+found';">
         </div>
+        <h3 style="text-align: center;">ヘッドスパサイト</h3>
       </article>
       <article class="card">
-        <div class="thumb">Thumbnail</div>
-        <h3>Media Site</h3>
-        <p>CMS連携の更新しやすい構成。</p>
-        <div class="actions">
-          <a class="btn primary" href="#" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> 見る</a>
+        <div class="thumb">
+          <img src="image/HP-4.jpg" alt="美容室サイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-4.jpg+not+found';">
         </div>
+        <h3 style="text-align: center;">美容室サイト</h3>
       </article>
     </section>
   </div>

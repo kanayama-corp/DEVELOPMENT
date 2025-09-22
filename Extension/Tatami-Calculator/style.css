@@ -150,3 +150,43 @@ input[type="number"]:focus {
 .btn-secondary:hover {
     background-color: #ccc;
 }
+
+.shortcut-info {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f0f8ff;
+    border-radius: 4px;
+    border-left: 4px solid #4CAF50;
+}
+
+.shortcut-info h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.shortcut-info .settings-description {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.shortcut-info strong {
+    color: #2c5282;
+    background-color: #e6f3ff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.shortcut-info small {
+    color: #666;
+    font-size: 11px;
+}
+
+.shortcut-settings-btn {
+    margin-top: 10px;
+    width: 100%;
+    font-size: 12px;
+    padding: 8px 12px;
+}
+

@@ -65,20 +65,17 @@
     }
     .thumb {
       aspect-ratio: 16/9;
-      background: #F4F6FA;
-      border-radius: 12px;
-      display: grid; place-items: center;
-      color: #9ba3af;
-      font-size: 14px;
-      border: 1px dashed #E2E8F0;
       /* Make the thumbnail reach card edges by canceling card padding */
       margin: -24px -24px 12px -24px;
+      display: block;
+      background: none;
+      border: 0;
     }
     .thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 12px;
+      border-radius: 0; /* edge-to-edge inside card; card's radius will clip */
       display: block;
     }
     .card h3 { font-size: 18px; margin: 0; }
@@ -102,27 +99,27 @@
     <section class="grid">
       <!-- 4カラムのカード例 -->
       <article class="card">
-        <div class="thumb">
+        <a class="thumb" href="https://development-x3qw.vercel.app/" target="_blank" rel="noopener noreferrer">
           <img src="image/HP-1.jpg" alt="カメラマンサイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-1.jpg+not+found';">
-        </div>
+        </a>
         <h3 style="text-align: center;">カメラマンサイト</h3>
       </article>
       <article class="card">
-        <div class="thumb">
+        <a class="thumb" href="https://development-w4j1.vercel.app/" target="_blank" rel="noopener noreferrer">
           <img src="image/HP-2.jpg" alt="インテリアコーディネーターサイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-2.jpg+not+found';">
-        </div>
+        </a>
         <h3 style="text-align: center;">インテリアコーディネーターサイト</h3>
       </article>
       <article class="card">
-        <div class="thumb">
+        <a class="thumb" href="https://development-7zva.vercel.app/" target="_blank" rel="noopener noreferrer">
           <img src="image/HP-3.jpg" alt="ヘッドスパサイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-3.jpg+not+found';">
-        </div>
+        </a>
         <h3 style="text-align: center;">ヘッドスパサイト</h3>
       </article>
       <article class="card">
-        <div class="thumb">
+        <a class="thumb" href="https://development-grqx.vercel.app/" target="_blank" rel="noopener noreferrer">
           <img src="image/HP-4.jpg" alt="美容室サイト サムネイル" onerror="this.onerror=null; this.src='https://placehold.co/640x360/E0E7FF/6B7280?text=HP-4.jpg+not+found';">
-        </div>
+        </a>
         <h3 style="text-align: center;">美容室サイト</h3>
       </article>
     </section>

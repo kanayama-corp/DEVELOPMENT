@@ -1478,10 +1478,15 @@ button, .cta-button, .submit-button, .corporate-button, .nav-menu a {
     }
     
     .nav-menu {
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap; /* スマホでも同じ並びを維持 */
+        justify-content: flex-start;
         gap: 0.8rem;
+        overflow-x: auto; /* 横スクロールで全メニューを表示 */
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        padding-bottom: 6px;
     }
+    .nav-menu::-webkit-scrollbar { display: none; }
     
     .nav-menu a {
         font-size: 0.8rem;
@@ -1512,6 +1517,21 @@ button, .cta-button, .submit-button, .corporate-button, .nav-menu a {
         margin-bottom: 2rem;
         line-height: 1.6;
     }
+
+    /* ヒーローのアニメ文字をモバイルに最適化（構成は同じで縮尺のみ調整） */
+    .animated-text .text-line:nth-child(1),
+    .animated-text .text-line:nth-child(2) {
+        font-size: 2rem;
+        margin-bottom: 0.6rem;
+    }
+    .animated-text .text-line:nth-child(2) {
+        transform: none; /* はみ出し防止 */
+        white-space: normal;
+    }
+    .animated-text .text-line.description-line {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
     
     .cta-button {
         font-size: 0.9rem;
@@ -1535,6 +1555,7 @@ button, .cta-button, .submit-button, .corporate-button, .nav-menu a {
     
     .section-subtitle {
         font-size: 0.9rem;
+        white-space: normal; /* スマホでは改行を許可してレイアウト崩れ防止 */
     }
     
     /* Concept Section - Mobile Layout */

@@ -87,6 +87,18 @@
       border: 1px solid #E5E7EB; color: #1f2937; background: #fff;
     }
     .btn.primary { background: #E6F0FF; color: #1A73E8; border-color: #D0E2FF; }
+
+    /* Responsive: keep structure, optimize readability */
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .container { padding: 24px; }
+      .title { font-size: 28px; }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+      .container { padding: 20px; }
+      .title { font-size: 24px; }
+    }
   </style>
 </head>
 <body>

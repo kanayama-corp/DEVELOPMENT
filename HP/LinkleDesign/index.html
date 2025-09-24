@@ -31,6 +31,23 @@
             background-image: url('image/hero.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed; /* Parallax effect on desktop */
+        }
+        /* Voice section parallax */
+        .voice-parallax {
+            background-image: url('image/hero.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect on desktop */
+        }
+        /* Disable fixed background on small screens for performance/compatibility */
+        @media (max-width: 1024px) {
+            .hero-bg-image {
+                background-attachment: scroll;
+            }
+            .voice-parallax {
+                background-attachment: scroll;
+            }
         }
         /* スクロール位置のオフセット */
         :target {
@@ -46,7 +63,7 @@
         #scroll-title {
             display: block;
             text-transform: uppercase;
-            color: black;
+            color: white;
             font-family: "Inter", sans-serif;
             font-size: 16px;
             font-weight: bold;
@@ -68,7 +85,7 @@
             margin-left: -1px;
             width: 2px;
             height: 120px;
-            background: black;
+            background: white;
             content: ' ';
         }
         @keyframes elasticus {
@@ -196,8 +213,9 @@
         </section>
 
         <!-- ⑥ お客様の声 -->
-        <section id="voice" class="py-20 bg-slate-100">
-            <div class="container mx-auto px-6">
+        <section id="voice" class="relative py-20 voice-parallax">
+            <div class="absolute inset-0 bg-white/50"></div>
+            <div class="container mx-auto px-6 relative z-10">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-bold">成功への道のりを、共に歩んだお客様の声。</h2>
                 </div>

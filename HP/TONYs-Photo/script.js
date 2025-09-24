@@ -1,3 +1,6 @@
+// Global flag to disable responsive/mobile behaviors
+const NON_RESPONSIVE = true;
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -73,6 +76,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Prevent Flash of Unstyled Content (FOUC)
     document.documentElement.classList.add('loaded');
     
+    // Set CSS variable for nav height so hero can fit below fixed nav on mobile
+    function setNavHeightVar() {
+        const nav = document.querySelector('.nav');
+        const h = nav ? nav.offsetHeight : 56;
+        document.documentElement.style.setProperty('--nav-h', h + 'px');
+    }
+    setNavHeightVar();
+    window.addEventListener('resize', setNavHeightVar, { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(setNavHeightVar, 100));
+
     // Initialize hero title animation
     initHeroTitleAnimation();
     
@@ -311,6 +324,13 @@ window.addEventListener('load', function() {
     setTimeout(() => {
         document.body.style.opacity = '1';
     }, 100);
+    // Recompute nav height after fonts/styles load
+    const recomputeNav = () => {
+        const nav = document.querySelector('.nav');
+        const h = nav ? nav.offsetHeight : 56;
+        document.documentElement.style.setProperty('--nav-h', h + 'px');
+    };
+    recomputeNav();
 });
 
 // Mobile menu toggle (if needed for smaller screens)
@@ -349,9 +369,11 @@ function createMobileMenu() {
     }
 }
 
-// Initialize mobile menu on resize
-window.addEventListener('resize', createMobileMenu);
-createMobileMenu();
+// Initialize mobile menu on resize (disabled in non-responsive mode)
+if (!NON_RESPONSIVE) {
+    window.addEventListener('resize', createMobileMenu);
+    createMobileMenu();
+}
 
 // ===== MOBILE OPTIMIZATION FEATURES =====
 
@@ -630,10 +652,6 @@ class DeviceOptimizer {
             .ios-device body {
                 -webkit-overflow-scrolling: touch;
             }
-            
-            .ios-device .hero {
-                min-height: -webkit-fill-available;
-            }
         `;
         document.head.appendChild(style);
         
@@ -666,8 +684,10 @@ class DeviceOptimizer {
 
 // Initialize optimizations when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    new TouchOptimizer();
-    new DeviceOptimizer();
+    if (!NON_RESPONSIVE) {
+        new TouchOptimizer();
+        new DeviceOptimizer();
+    }
     
     // Add reduced motion support
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

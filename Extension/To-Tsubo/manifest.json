@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "平米→坪変換",
-  "version": "1.0",
+  "version": "1.1",
   "description": "平米数を入力して坪数に変換する拡張機能",
   "icons": {
     "16": "icon.png",
@@ -20,6 +20,5 @@
       },
       "description": "平米→坪変換を開く"
     }
-  },
-  "permissions": ["tabs"]
+  }
 }

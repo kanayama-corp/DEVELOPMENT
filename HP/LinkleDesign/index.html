@@ -148,15 +148,15 @@
     <header id="header" class="fixed top-0 w-full z-50 transition-all duration-300">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" id="logo" class="text-2xl font-bold text-white transition-colors duration-300">Linkle Design</a>
-            <nav id="desktop-nav" class="hidden lg:flex items-center space-x-0">
-                <div class="flex space-x-0 transform -translate-x-[100px]">
+            <nav id="desktop-nav" class="hidden lg:flex items-center space-x-0 -mr-[30px]">
+                <div class="flex space-x-0 transform -translate-x-[180px]">
                     <a href="#concept" class="bg-white text-black px-4 py-2 transition-colors">私たちについて</a>
                     <a href="#works" class="bg-white text-black px-4 py-2 transition-colors">制作実績</a>
                     <a href="#voice" class="bg-white text-black px-4 py-2 transition-colors">お客様の声</a>
                     <a href="#simulation" class="bg-white text-black px-4 py-2 transition-colors">料金シミュレーション</a>
                 </div>
-                <a href="#contact" class="cta-button bg-[#1f2230] text-white pl-[9.24px] pr-[9.24px] py-3 rounded-none hover:bg-[#171a26] transition-colors shadow-none tracking-wide font-bold -ml-px transform origin-right scale-[1.76] scale-y-[2.288]">
-                    <span class="inline-block scale-x-[0.568] scale-y-[0.437]">お問い合わせ</span>
+                <a href="#contact" class="cta-button bg-gray-800 hover:bg-gray-900 text-white pl-[9.24px] pr-[9.24px] py-3 rounded-none transition-colors shadow-none tracking-wide font-bold -ml-px transform origin-right scale-[1.76] scale-y-[2.288]">
+                    <span class="inline-block scale-x-[0.5964] scale-y-[0.45885] translate-y-[3px]">お問い合わせ</span>
                 </a>
             </nav>
             <button id="mobile-menu-button" class="lg:hidden text-white transition-colors duration-300">
@@ -180,10 +180,12 @@
             <div class="relative container mx-auto px-6 h-full flex items-center">
                 <div class="bg-white/80 backdrop-blur-sm p-8 md:p-12 rounded-lg shadow-xl max-w-2xl text-left mt-[350px]">
                     <h1 class="text-4xl md:text-5xl font-bold text-gray-800 leading-tight mb-4">
-                        あなたのビジネスに、<br>未来へ繋がる<span class="text-blue-600">「輪」</span>を。
+                        「見られる」から
+                        <span class="block h-[28px]"></span>
+                        「選ばれる」サイトへ。
                     </h1>
                     <p class="text-lg text-gray-600 mb-8">
-                        私たちはただウェブサイトを作るだけではありません。デザインと戦略で、お客様のビジネスを成功へと導くパートナーです。
+                        私たちはただウェブサイトを作るだけではありません。<br>デザインと戦略で、お客様のビジネスを成功へと導くパートナーです。
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <a href="#contact" class="btn-vo bg-black text-white rounded-full text-lg font-semibold shadow-lg">
@@ -202,13 +204,25 @@
 
         <!-- ③ 問題提起 -->
         <section id="problem" class="py-20 bg-white">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">そのウェブサイト、「想い」が伝わっていますか？</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto mb-12">「デザインが古い」「スマホで見づらい」「問い合わせに繋がらない」。ウェブサイトは、ただ"あるだけ"では機会損失を生むだけです。眠っているビジネスの可能性を、今こそ解き放ちませんか？</p>
-                <div class="max-w-md mx-auto bg-gray-50 p-6 rounded-lg text-left space-y-4 shadow-sm border border-gray-200 transform scale-[1.5] translate-x-[250px]">
-                    <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>自社の魅力がうまく伝わらない</span></p>
-                    <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>何を基準に制作会社を選べばいいか分からない</span></p>
-                    <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>作った後の更新や運用が不安</span></p>
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">そのウェブサイト、「想い」が伝わっていますか？</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-10 items-stretch">
+                    <!-- Left: Image area -->
+                    <div class="order-2 md:order-1 transform translate-x-[0px]">
+                        <div class="relative mx-auto h-[197px] md:h-[261px] w-full md:w-1/2 overflow-hidden rounded-lg shadow-md bg-gray-100"></div>
+                    </div>
+                    <!-- Right: Cards -->
+                    <div class="order-1 md:order-2 h-[197px] md:h-[261px] transform -translate-x-[190px]">
+                        <div class="bg-gray-50 p-6 rounded-lg text-left space-y-4 shadow-sm border border-gray-200 h-full overflow-auto">
+                            <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[1.2em]">自社の魅力がうまく伝わらない</span></p>
+                            <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[1.2em]">何を基準に制作会社を選べばいいか分からない</span></p>
+                            <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[1.2em]">作った後の更新や運用が不安</span></p>
+                            <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[1.2em]">デザインと実装の品質に不安がある</span></p>
+                            <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[1.2em]">集客や問い合わせに繋がる導線が弱い</span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -225,21 +239,21 @@
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <h3 class="text-xl font-bold mb-3">心を動かすデザイン</h3>
-                        <p class="text-gray-600">ユーザーの心に響き、行動を促す、見た目だけではない戦略的デザイン。</p>
+                        <p class="text-gray-600">ユーザーの心に響き、行動を促す。<br>見た目だけではない戦略的デザイン。</p>
                     </div>
                     <div class="p-8 bg-white rounded-lg shadow-md transition-transform hover:-translate-y-2">
                         <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
                              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                         </div>
                         <h3 class="text-xl font-bold mb-3">成果に繋がる戦略設計</h3>
-                        <p class="text-gray-600">お客様のビジネスゴールから逆算し、成果を最大化するサイト構造を設計します。</p>
+                        <p class="text-gray-600">お客様のビジネスゴールから逆算し<br>成果を最大化するサイト構造を設計します。</p>
                     </div>
                     <div class="p-8 bg-white rounded-lg shadow-md transition-transform hover:-translate-y-2">
                         <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         </div>
                         <h3 class="text-xl font-bold mb-3">共に歩むパートナーシップ</h3>
-                        <p class="text-gray-600">制作して終わりではありません。公開後も継続的にサポートし、ビジネスの成長を共に目指します。</p>
+                        <p class="text-gray-600">制作して終わりではありません。<br>継続的サポートでビジネスの成長を共に目指します。</p>
                     </div>
                 </div>
             </div>
@@ -249,15 +263,15 @@
         <section id="works" class="py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold">様々な業界で、繋がりと成果を生み出してきました。</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold">制作サイト</h2>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/3498db/ffffff?text=Corporate+Site" alt="制作実績1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"><div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><div class="text-center text-white p-4"><h3 class="text-xl font-bold">コーポレートサイト</h3><p class="mt-2 text-sm">信頼性とブランドイメージを向上させるデザイン。</p></div></div></div>
-                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/e74c3c/ffffff?text=E-Commerce" alt="制作実績2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"><div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><div class="text-center text-white p-4"><h3 class="text-xl font-bold">ECサイト</h3><p class="mt-2 text-sm">売上向上に直結するユーザー体験を設計。</p></div></div></div>
-                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/2ecc71/ffffff?text=Service+Site" alt="制作実績3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"><div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><div class="text-center text-white p-4"><h3 class="text-xl font-bold">サービスサイト</h3><p class="mt-2 text-sm">サービスの価値を明確に伝え、問い合わせを促進。</p></div></div></div>
-                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/9b59b6/ffffff?text=LP+Design" alt="制作実績4" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"><div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><div class="text-center text-white p-4"><h3 class="text-xl font-bold">ランディングページ</h3><p class="mt-2 text-sm">コンバージョンを最大化する情報設計。</p></div></div></div>
-                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/f1c40f/ffffff?text=Recruiting+Site" alt="制作実績5" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"><div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><div class="text-center text-white p-4"><h3 class="text-xl font-bold">採用サイト</h3><p class="mt-2 text-sm">企業の魅力を伝え、優秀な人材を獲得。</p></div></div></div>
-                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/1abc9c/ffffff?text=Media+Site" alt="制作実績6" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"><div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><div class="text-center text-white p-4"><h3 class="text-xl font-bold">オウンドメディア</h3><p class="mt-2 text-sm">ファンを育てるコンテンツプラットフォーム。</p></div></div></div>
+                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="image/HP-1.jpg" alt="制作実績1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></div>
+                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="image/HP-2.jpg" alt="制作実績2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></div>
+                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="image/HP-3.jpg" alt="制作実績3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></div>
+                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/9b59b6/ffffff?text=LP+Design" alt="制作実績4" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></div>
+                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/f1c40f/ffffff?text=Recruiting+Site" alt="制作実績5" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></div>
+                    <div class="group rounded-lg overflow-hidden shadow-lg relative"><img src="https://placehold.co/600x400/1abc9c/ffffff?text=Media+Site" alt="制作実績6" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></div>
                 </div>
             </div>
         </section>

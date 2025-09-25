@@ -16,14 +16,21 @@
             perspective: 1000px;
             overflow: hidden;
             height: 100vh;
+            width: 100vw;
             margin: 0;
+            padding: 0;
             cursor: none;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
         #scene-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             transform-style: preserve-3d;
             transition: transform 3s cubic-bezier(0.25, 1, 0.5, 1);
         }
@@ -40,36 +47,25 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* アートギャラリー */
-        #gallery-layer {
-            transform: translateZ(-5000px);
-            opacity: 0;
-            transform-style: preserve-3d;
-            transition: opacity 2s ease-in-out;
-        }
-        .artwork {
-            position: absolute;
-            max-width: 400px;
-            width: 25vw;
-            height: auto;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            background-color: #111;
-        }
 
         /* レイヤー6: 店内 */
         #layer-6 {
             transform: translateZ(-2000px);
             opacity: 0;
             /* ★遅延を削除し、スムーズなクロスフェードを可能に */
-            transition: opacity 2s ease-in-out;
+            transition: opacity 8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: none;
+            outline: none;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
         }
         #layer-6-bg {
             width: 110%;
@@ -77,11 +73,28 @@
             object-fit: cover;
             transform: scale(1.1);
             filter: brightness(0.8);
+            border: none;
+            outline: none;
         }
         
-        #welcome-text {
+        #hello-text {
             opacity: 0;
-            transition: opacity 4s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1), transform 6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: none;
+            outline: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .gradient-silver {
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 25%, #94a3b8 50%, #e2e8f0 75%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* レイヤー5: 背景 */
@@ -108,7 +121,7 @@
             border-radius: 1rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
             transition: all 1.5s ease-in-out, opacity 1s ease-out 0.5s;
-            outline: 1px solid transparent; 
+            outline: none; 
             backface-visibility: hidden;
         }
         
@@ -127,6 +140,14 @@
 
         /* レイヤー2: タイトル */
         #layer-2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
             transform: translateZ(0px);
         }
         
@@ -153,29 +174,14 @@
             z-index: 9999;
         }
 
-        #scroll-indicator {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            transition: opacity 0.5s;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-            40% { transform: translate(-50%, -15px); }
-            60% { transform: translate(-50%, -7px); }
-        }
     </style>
 </head>
 <body class="bg-black">
 
     <div id="scene-container">
         <div id="scene-rotator">
-            <div id="gallery-layer" class="layer"></div>
             <div id="layer-6" class="layer">
-                <img id="layer-6-bg" src="https://images.unsplash.com/photo-1543248919-429f5ab50735?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                <h2 id="welcome-text" class="text-4xl md:text-6xl text-white font-serif absolute">Welcome</h2>
+                <h2 id="hello-text" class="text-4xl md:text-6xl text-white font-serif absolute">Welcome</h2>
             </div>
             <div id="layer-5" class="layer">
                 <img id="layer-5-bg" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2525&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fGVufDB8fA%3D%3D" alt="抽象的な背景">
@@ -186,7 +192,7 @@
             <div id="layer-3" class="layer"></div>
             <div id="layer-2" class="layer transition-opacity duration-1000 ease-out">
                 <div class="text-center text-white">
-                    <h1 class="text-6xl md:text-8xl font-bold tracking-wider" style="font-family: 'Inter', sans-serif;">Chrono Canvas</h1>
+                    <h1 class="text-6xl md:text-8xl font-bold tracking-wider gradient-silver" style="font-family: 'Inter', sans-serif;">Chrono Canvas</h1>
                     <p class="mt-4 text-xl md:text-2xl" style="font-family: 'Noto Serif JP', serif;">その一枚の、奥へ。</p>
                 </div>
             </div>
@@ -201,9 +207,6 @@
     
     <div id="custom-cursor"></div>
 
-    <div id="scroll-indicator" class="text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -214,11 +217,9 @@
             const layer4Img = document.getElementById('layer-4-img');
             const layer5 = document.getElementById('layer-5');
             const layer6 = document.getElementById('layer-6');
-            const galleryLayer = document.getElementById('gallery-layer');
-            const welcomeText = document.getElementById('welcome-text');
+            const helloText = document.getElementById('hello-text');
             const particleContainer = document.getElementById('layer-3');
             const cursor = document.getElementById('custom-cursor');
-            const scrollIndicator = document.getElementById('scroll-indicator');
 
             let scrollStage = 0;
             let isAnimating = false;
@@ -265,34 +266,7 @@
             };
             createParticles();
 
-            // --- ギャラリー生成 ---
-            const createGallery = () => {
-                const artworks = [
-                    'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500',
-                    'https://images.unsplash.com/photo-1579965342575-16428a7c8881?w=500',
-                    'https://images.unsplash.com/photo-1580136579324-42221059193f?w=500',
-                    'https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=500',
-                    'https://images.unsplash.com/photo-1531816438723-d3c2755f5b2e?w=500',
-                    'https://images.unsplash.com/photo-1512413243941-02681531b4e5?w=500',
-                    'https://images.unsplash.com/photo-1552435032-978a307040ba?w=500',
-                    'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=500',
-                    'https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=500',
-                    'https://images.unsplash.com/photo-1599745580126-79116c944369?w=500',
-                    'https://images.unsplash.com/photo-1577083288435-e2154b51a568?w=500',
-                    'https://images.unsplash.com/photo-1617502025739-d34554c15392?w=500',
-                ];
-                for(let i = 0; i < 20; i++) {
-                    const artworkEl = document.createElement('img');
-                    artworkEl.className = 'artwork';
-                    artworkEl.src = artworks[i % artworks.length];
-                    const x = (Math.random() - 0.5) * 3000;
-                    const y = (Math.random() - 0.5) * 2000;
-                    const z = (Math.random() - 0.5) * 4000;
-                    artworkEl.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${(Math.random()-0.5)*60}deg) rotateX(${(Math.random()-0.5)*30}deg)`;
-                    galleryLayer.appendChild(artworkEl);
-                }
-            };
-            createGallery();
+            // ギャラリー機能を削除
 
 
             // --- マウス操作（視差効果）---
@@ -322,37 +296,16 @@
                     }
 
                     switch (scrollStage) {
-                        case 3: // ギャラリー -> 店内
-                            scene.style.transform = `translateZ(2000px)`;
-                            galleryLayer.style.opacity = '0';
-                            
-                            // ★ 店内のレイヤーを再度表示する
-                            setTimeout(() => {
-                                layer6.style.opacity = '1';
-                                welcomeText.style.transform = 'scale(1)';
-                                // Welcomeテキストをゆっくりと表示
-                                welcomeText.style.transition = 'opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                                welcomeText.style.opacity = '1';
-                                scrollIndicator.style.opacity = '1';
-                            }, 1000);
-                            
-                            setTimeout(() => {
-                                isAnimating = false;
-                                scrollStage = 2;
-                            }, 3000);
-                            break;
-
                         case 2: // 店内 -> アートワーク前
-                            // Welcomeテキストをゆっくりと消す
-                            welcomeText.style.transition = 'opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                            welcomeText.style.opacity = '0';
+                            // Helloテキストをゆっくりと消す
+                            helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                            helloText.style.opacity = '0';
                             scene.style.transform = `translateZ(1000px)`;
                             setTimeout(() => {
                                 layer6.style.opacity = '0';
                                 layer5.style.opacity = '1';
                                 layer4Img.style.transform = 'scale(1)';
                                 layer4Img.style.opacity = '1';
-                                scrollIndicator.style.opacity = '1';
                             }, 500);
                             setTimeout(() => {
                                 isAnimating = false;
@@ -361,12 +314,10 @@
                             break;
                         
                         case 1: // アートワーク前 -> 初期画面
-                            scrollIndicator.style.opacity = '0';
                             scene.style.transform = `translateZ(0px)`;
                             setTimeout(() => {
                                 layer1.style.opacity = '1';
                                 layer2.style.opacity = '1';
-                                scrollIndicator.style.opacity = '1';
                             }, 500);
                             setTimeout(() => {
                                 isAnimating = false;
@@ -378,7 +329,7 @@
                 
                 // --- 下スクロール（進む）---
                 if (e.deltaY > 0) {
-                     if (scrollStage === 3) return;
+                     if (scrollStage === 2) return;
                     isAnimating = true;
                     if (soundEnabled) {
                         wind.volume.rampTo(-15, 0.1);
@@ -389,50 +340,27 @@
                         case 0: // 初期画面 -> アートワーク前
                             layer1.style.opacity = '0';
                             layer2.style.opacity = '0';
-                            scrollIndicator.style.opacity = '0';
                             scene.style.transform = `translateZ(1000px)`;
                             setTimeout(() => {
-                                scrollIndicator.style.opacity = '1';
                                 isAnimating = false;
                                 scrollStage = 1;
                             }, 3000);
                             break;
                         
-                        case 1: // アートワーク前 -> 店内
-                            scrollIndicator.style.opacity = '0';
+                        case 1: // アートワーク前 -> 店内（Welcomeで終了）
                             layer4Img.style.transform = 'scale(2)';
                             layer4Img.style.opacity = '0';
                             layer5.style.opacity = '0';
                             setTimeout(() => {
                                 layer6.style.opacity = '1';
-                                welcomeText.style.transitionDelay = '0s';
-                                welcomeText.style.opacity = '1';
+                                helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                                helloText.style.transitionDelay = '0s';
+                                helloText.style.opacity = '1';
                             }, 1000);
                             scene.style.transform = `translateZ(2000px)`;
                             setTimeout(() => {
-                                scrollIndicator.style.opacity = '1';
-                                isAnimating = false;
+                                    isAnimating = false;
                                 scrollStage = 2;
-                            }, 3000);
-                            break;
-                        
-                        case 2: // 店内 -> ギャラリー
-                            scrollIndicator.style.opacity = '0';
-                            // Welcomeテキストをゆっくりと消す
-                            welcomeText.style.transition = 'opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                            welcomeText.style.opacity = '0';
-                            
-                            scene.style.transform = `translateZ(6000px)`;
-                            
-                            // ★ Welcomeが消え始めると同時にギャラリーを表示し、店内を消す
-                            setTimeout(() => {
-                                galleryLayer.style.opacity = '1';
-                                layer6.style.opacity = '0';
-                            }, 500); // 0.5秒後にクロスフェード開始
-                            
-                            setTimeout(() => {
-                                isAnimating = false;
-                                scrollStage = 3;
                             }, 3000);
                             break;
                     }

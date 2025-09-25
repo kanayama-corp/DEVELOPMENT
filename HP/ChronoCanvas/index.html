@@ -67,6 +67,48 @@
             justify-content: center !important;
             align-items: center !important;
         }
+
+        /* レイヤー7: メッセージセクション */
+        #layer-7 {
+            transform: translateZ(-3000px);
+            opacity: 0;
+            transition: opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            text-align: center;
+        }
+
+        #message-text {
+            opacity: 0;
+            transition: opacity 8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-align: center;
+            line-height: 1.8;
+            max-width: 1200px;
+            padding: 0 40px;
+            width: 100%;
+        }
+
+        .message-line {
+            display: block;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 25%, #94a3b8 50%, #e2e8f0 75%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+        }
+
+        .message-line:last-child {
+            margin-bottom: 0;
+            font-weight: 400;
+            font-size: 2rem;
+            white-space: nowrap;
+        }
         #layer-6-bg {
             width: 110%;
             height: 110%;
@@ -212,6 +254,13 @@
 
     <div id="scene-container">
         <div id="scene-rotator">
+            <div id="layer-7" class="layer">
+                <div id="message-text">
+                    <span class="message-line">一瞬は儚く、しかし無限に美しい。</span>
+                    <span class="message-line">その瞬間を捉え</span>
+                    <span class="message-line">永遠に輝き続けるアートピースとして昇華させる。</span>
+                </div>
+            </div>
             <div id="layer-6" class="layer">
                 <h2 id="hello-text" class="text-4xl md:text-6xl text-white font-serif">Welcome</h2>
             </div>
@@ -255,7 +304,9 @@
             const layer4Img = document.getElementById('layer-4-img');
             const layer5 = document.getElementById('layer-5');
             const layer6 = document.getElementById('layer-6');
+            const layer7 = document.getElementById('layer-7');
             const helloText = document.getElementById('hello-text');
+            const messageText = document.getElementById('message-text');
             const particleContainer = document.getElementById('layer-3');
             const cursor = document.getElementById('custom-cursor');
             const bgmToggle = document.getElementById('bgm-toggle');
@@ -348,7 +399,7 @@
             const handleMouseMove = (e) => {
                 cursor.style.left = `${e.clientX}px`;
                 cursor.style.top = `${e.clientY}px`;
-                // scrollStage 2（Welcomeセクション）では常に中央固定
+                // scrollStage 2以上（WelcomeとMessageセクション）では常に中央固定
                 if (scrollStage >= 2) {
                     rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                     return;
@@ -372,20 +423,16 @@
                     }
 
                     switch (scrollStage) {
-                        case 2: // 店内 -> アートワーク前
-                            // Helloテキストをゆっくりと消す
-                            helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
-                            helloText.style.opacity = '0';
-                            // 中央固定を維持
-                            rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
-                            scene.style.transform = `translateZ(1000px)`;
+                        case 3: // メッセージ -> Welcome（戻る）
+                            messageText.style.opacity = '0';
                             setTimeout(() => {
-                                layer6.style.opacity = '0';
-                            }, 6000);
-                            setTimeout(() => {
-                                scrollStage = 3;
+                                layer7.style.opacity = '0';
+                                layer6.style.opacity = '1';
+                                helloText.style.opacity = '1';
+                                scene.style.transform = `translateZ(2000px)`;
+                                scrollStage = 2;
                                 isAnimating = false;
-                            }, 8000);
+                            }, 4000);
                             break;
                         
                         case 1: // アートワーク前 -> 初期画面
@@ -404,10 +451,10 @@
                 
                 // --- 下スクロール（進む）---
                 if (e.deltaY > 0) {
-                     if (scrollStage === 2) return;
+                    if (scrollStage >= 3) return;
                     isAnimating = true;
                     if (soundEnabled) {
-                        wind.volume.rampTo(-15, 0.1);
+                        wind.volume.rampTo(-20, 0.1);
                         setTimeout(() => wind.volume.rampTo(-Infinity, 2), 500);
                     }
 
@@ -417,19 +464,17 @@
                             layer2.style.opacity = '0';
                             scene.style.transform = `translateZ(1000px)`;
                             setTimeout(() => {
-                                isAnimating = false;
                                 scrollStage = 1;
-                            }, 3000);
+                                isAnimating = false;
+                            }, 2000);
                             break;
                         
-                        case 1: // アートワーク前 -> 店内（Welcomeで終了）
+                        case 1: // アートワーク前 -> Welcome
                             layer4Img.style.transform = 'scale(2)';
                             layer4Img.style.opacity = '0';
                             layer5.style.opacity = '0';
                             setTimeout(() => {
                                 layer6.style.opacity = '1';
-                                // 中央固定を強制
-                                rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                                 helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
                                 helloText.style.transitionDelay = '0s';
                                 helloText.style.opacity = '1';
@@ -437,10 +482,27 @@
                             scene.style.transform = `translateZ(2000px)`;
                             setTimeout(() => {
                                 scrollStage = 2;
-                                // Welcomeセクションに入ったら中央固定を維持
-                                rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                                 isAnimating = false;
                             }, 2000);
+                            break;
+
+                        case 2: // Welcome -> メッセージ
+                            // Helloテキストをゆっくりと消す
+                            helloText.style.transition = 'opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                            helloText.style.opacity = '0';
+                            // 中央固定を維持
+                            rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                            scene.style.transform = `translateZ(3000px)`;
+                            setTimeout(() => {
+                                layer6.style.opacity = '0';
+                                layer7.style.opacity = '1';
+                                messageText.style.transition = 'opacity 4s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                                messageText.style.opacity = '1';
+                            }, 2000);
+                            setTimeout(() => {
+                                scrollStage = 3;
+                                isAnimating = false;
+                            }, 3000);
                             break;
                     }
                 }

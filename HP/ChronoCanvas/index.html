@@ -102,7 +102,7 @@
             letter-spacing: 0.1em;
             white-space: nowrap;
             opacity: 0;
-            transition: opacity 3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: opacity 4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .message-line:last-child {
@@ -425,18 +425,40 @@
                     }
 
                     switch (scrollStage) {
+                        case 2: // Welcome -> アートワーク前（戻る）
+                            // Welcomeを隠しつつ、アートワーク前の状態に戻す
+                            helloText.style.transition = 'opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                            helloText.style.opacity = '0';
+                            // パララックスを復帰させるため、中央固定は解除（mousemoveが自動で効く）
+                            scene.style.transform = `translateZ(1000px)`;
+                            setTimeout(() => {
+                                layer6.style.opacity = '0';
+                                layer5.style.opacity = '1';
+                                layer4Img.style.transform = 'scale(1)';
+                                layer4Img.style.opacity = '1';
+                                scrollStage = 1;
+                                isAnimating = false;
+                            }, 2000);
+                            break;
                         case 3: // メッセージ -> Welcome（戻る）
+                            // 1000msで戻る: 各トランジションを1s以内に短縮
+                            layer7.style.transition = 'opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                            messageText.style.transition = 'opacity 0.5s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                            helloText.style.transition = 'opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                            // Welcomeレイヤー自体のフェードも早める（デフォルト8sを1sに）
+                            layer6.style.transition = 'opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1)';
                             messageText.style.opacity = '0';
+                            // まずWelcome側をすぐ表示（メッセージがフェードしていく間も文字が見えるように）
+                            layer6.style.opacity = '1';
+                            helloText.style.opacity = '1';
                             setTimeout(() => {
                                 layer7.style.opacity = '0';
-                                layer6.style.opacity = '1';
-                                helloText.style.opacity = '1';
                                 scene.style.transform = `translateZ(2000px)`;
                                 // 戻りでも即座に中央固定にする
                                 rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                                 scrollStage = 2;
                                 isAnimating = false;
-                            }, 4000);
+                            }, 1000); // 1000msで戻る
                             break;
                         
                         case 1: // アートワーク前 -> 初期画面
@@ -510,7 +532,7 @@
                                 messageLines.forEach((line, index) => {
                                     setTimeout(() => {
                                         line.style.opacity = '1';
-                                    }, index * 1500); // 1.5秒間隔で表示
+                                    }, index * 2500); // 2.5秒間隔で表示（少し遅く）
                                 });
                             }, 1000);
                             setTimeout(() => {

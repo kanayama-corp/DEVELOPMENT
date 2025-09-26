@@ -384,16 +384,24 @@
                     imagesLoaded: true,
                     percentPosition: false,
                     wrapAround: true,
+                    selectedAttraction: 0.02,
+                    friction: 0.3,
                     prevNextButtons: true,
                     pageDots: true,
                     cellAlign: 'left'
                 });
                 galleryImgs = Array.from(carouselEl.querySelectorAll('.carousel-cell img'));
                 flkty.on('scroll', () => {
+                    const slideW = flkty.slideableWidth || 0;
                     flkty.slides.forEach((slide, i) => {
                         const img = galleryImgs[i];
                         if (!img) return;
-                        const x = (slide.target + flkty.x) * -1/3;
+                        let slideX = slide.target + flkty.x;
+                        if (slideW > 0) {
+                            // ラップアラウンド時のジャンプを解消するため、オフセットをモジュロで正規化
+                            slideX = ((slideX % slideW) + slideW) % slideW;
+                        }
+                        const x = slideX * -1/3;
                         img.style[transformProp] = `translateX(${x}px)`;
                     });
                 });

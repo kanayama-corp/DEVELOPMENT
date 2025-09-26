@@ -262,6 +262,7 @@
             max-width: 1200px;
             border-radius: 12px;
             padding: 12px 0;
+            /* パララックス削除: 3D設定を無効化 */
         }
         /* Flickity viewportのクリッピングを解除して、前後の画像が見切れず残るように */
         .flickity-viewport { overflow: visible !important; }
@@ -274,14 +275,17 @@
             margin: 0 12px; /* 左右対称のスペーシング */
             overflow: hidden; /* 統一した矩形で切り抜き */
             border-radius: 8px;
+            /* パララックス削除: トランスフォームのトランジション無効化 */
+            transition: none;
         }
         .carousel-cell img {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: cover; /* 縦横比を保ちつつフィット */
-            will-change: transform;
-            transition: transform 0.2s linear;
+            /* さっきの状態へ戻す: 余計なスケールやトランジションを無効化 */
+            transition: none;
+            transform: none;
         }
         @media screen and (min-width: 768px) {
             .carousel-cell {
@@ -383,6 +387,7 @@
             const carouselEl = document.querySelector('#layer-8 .carousel');
             let flkty = null;
             let galleryImgs = [];
+            let galleryCells = [];
             const docStyle = document.documentElement.style;
             const transformProp = typeof docStyle.transform === 'string' ? 'transform' : 'WebkitTransform';
 
@@ -399,16 +404,15 @@
                     pageDots: true,
                     cellAlign: 'center'
                 });
+                galleryCells = Array.from(carouselEl.querySelectorAll('.carousel-cell'));
                 galleryImgs = Array.from(carouselEl.querySelectorAll('.carousel-cell img'));
+                // パララックス効果を無効化: スクロール時に変形をリセット
                 flkty.on('scroll', () => {
-                    // slide.progress は選択スライドを 0 とした相対位置（左右対称）
                     flkty.slides.forEach((slide, i) => {
                         const img = galleryImgs[i];
-                        if (!img) return;
-                        const progress = slide.progress; // 例: 左 -1 ← 0 → +1 右
-                        // 対称性を保証するため progress に基づく平行移動に変更
-                        const x = Math.max(-50, Math.min(50, progress * 50));
-                        img.style[transformProp] = `translateX(${x}px)`;
+                        const cell = galleryCells[i];
+                        if (img) img.style[transformProp] = '';
+                        if (cell) cell.style[transformProp] = '';
                     });
                 });
             };

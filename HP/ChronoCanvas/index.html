@@ -432,6 +432,8 @@
                                 layer6.style.opacity = '1';
                                 helloText.style.opacity = '1';
                                 scene.style.transform = `translateZ(2000px)`;
+                                // 戻りでも即座に中央固定にする
+                                rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                                 scrollStage = 2;
                                 isAnimating = false;
                             }, 4000);
@@ -482,8 +484,11 @@
                                 helloText.style.opacity = '1';
                             }, 1000);
                             scene.style.transform = `translateZ(2000px)`;
+                            // Welcome開始時点で即座に中央固定にする
+                            rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                            // マウス移動なしでも中央表示されるよう、ステージを先に進める
+                            scrollStage = 2;
                             setTimeout(() => {
-                                scrollStage = 2;
                                 isAnimating = false;
                             }, 2000);
                             break;

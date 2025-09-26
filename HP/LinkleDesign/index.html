@@ -19,7 +19,7 @@
         }
         @media (min-width: 1024px) {
             .golden-ratio-container {
-                 /* 1.618 : 1 */
+                /* 1.618 : 1 */
                 grid-template-columns: 1.618fr 1fr;
             }
         }
@@ -144,7 +144,6 @@
 </head>
 <body class="bg-white text-gray-800 antialiased">
 
-    <!-- ① ヘッダー -->
     <header id="header" class="fixed top-0 w-full z-50 transition-all duration-300">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" id="logo" class="text-2xl font-bold text-white transition-colors duration-300">Linkle Design</a>
@@ -163,7 +162,6 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden lg:hidden px-6 pb-4 bg-white/95 backdrop-blur-sm rounded-b-lg shadow-lg mx-4">
             <a href="#concept" class="block py-2 text-gray-600 hover:text-blue-600">私たちについて</a>
             <a href="#works" class="block py-2 text-gray-600 hover:text-blue-600">制作実績</a>
@@ -174,7 +172,6 @@
     </header>
 
     <main>
-        <!-- ② メインビジュアル -->
         <section class="relative h-screen min-h-[600px] hero-bg-image">
             <div class="absolute inset-0 hero-gradient"></div>
             <div class="relative container mx-auto px-6 h-full flex items-center">
@@ -194,7 +191,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Elastic Scroll Down -->
             <div class="absolute right-8 top-1/2 transform -translate-y-1/2 translate-y-[30px] hidden md:block">
                 <div id="scroll-down">
                     <span id="scroll-title">Scroll</span>
@@ -202,20 +198,17 @@
             </div>
         </section>
 
-        <!-- ③ 問題提起 -->
         <section id="problem" class="py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold">そのウェブサイト、「想い」が伝わっていますか？</h2>
                 </div>
                 <div class="grid md:grid-cols-2 gap-10 items-stretch">
-                    <!-- Left: Image area -->
                     <div class="order-2 md:order-1 transform translate-x-[100px]">
                         <div class="relative mx-auto h-[197px] md:h-[261px] w-full md:w-1/2 overflow-hidden rounded-lg shadow-md bg-gray-100">
                             <img src="image/1.jpg" alt="課題提起セクション画像" class="w-full h-full object-cover" />
                         </div>
                     </div>
-                    <!-- Right: Cards -->
                     <div class="order-1 md:order-2 h-[197px] md:h-[261px] transform -translate-x-[90px]">
                         <div class="text-left space-y-4 translate-y-[5px]">
                             <p class="flex items-center"><svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="text-[1.56em]">自社の魅力がうまく伝わらない</span></p>
@@ -229,7 +222,6 @@
             </div>
         </section>
 
-        <!-- ④ 解決策の提示 -->
         <section id="concept" class="py-20 bg-gray-50">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
@@ -261,7 +253,6 @@
             </div>
         </section>
 
-        <!-- ⑤ 制作実績 -->
         <section id="works" class="py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
@@ -277,7 +268,6 @@
             </div>
         </section>
 
-        <!-- ⑥ お客様の声 -->
         <section id="voice" class="relative py-20 voice-parallax">
             <div class="absolute inset-0 bg-white/50"></div>
             <div class="container mx-auto px-6 relative z-10">
@@ -319,7 +309,6 @@
             </div>
         </section>
 
-        <!-- ⑦ 料金プランとシミュレーターを統合 -->
         <section id="simulation" class="py-20 bg-gray-50">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
@@ -328,78 +317,62 @@
                 </div>
                 <div class="max-w-4xl mx-auto bg-white px-8 md:px-12 pt-8 md:pt-12 pb-6 rounded-lg shadow-xl">
                      <div class="grid md:grid-cols-2 gap-12">
-                        <div class="flex flex-col">
+                         <div class="flex flex-col">
                              <div>
-                                <div class="mb-6">
-                                    <label for="pages" class="block font-bold mb-2">ご希望のサイト規模</label>
-                                    <div class="flex items-center">
-                                        <input type="range" id="pages" name="pages" min="1" max="5" value="3" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                        <span id="pages-value" class="ml-4 font-bold text-blue-600 w-20 text-center">3 ページ</span>
-                                    </div>
-                                </div>
-                                <div class="mb-6">
-                                    <h4 class="font-bold mb-3">こだわりたいポイント（複数選択可）</h4>
-                                    <div class="space-y-2">
-                                        <label class="flex items-center"><input type="checkbox" data-price="50000" data-type="fixed" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">出張素材撮影</span></label>
-                                        <label class="flex items-center"><input type="checkbox" data-price="10000" data-type="per-page" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">アニメーション挿入</span></label>
-                                        <label class="flex items-center"><input type="checkbox" data-price="10000" data-type="fixed" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">サーバー・ドメイン設定サポート</span></label>
-                                        <label class="flex items-center"><input type="checkbox" data-price="5000" data-type="fixed" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">月間サポート</span></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center bg-blue-50 p-8 rounded-lg flex flex-col justify-center">
-                            <p class="text-lg text-gray-700">概算お見積もり金額</p>
-                            <p class="text-4xl md:text-5xl font-bold text-blue-600 my-2">¥<span id="total-price">270,000</span></p>
-                            <p class="text-sm text-gray-500">※あくまで概算です。詳細はお問い合わせください。</p>
-                            <a id="consult-button" href="#contact" class="mt-6 inline-block bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300 shadow-md">この内容で相談する</a>
-                        </div>
-                    </div>
+                                 <div class="mb-6">
+                                     <label for="pages" class="block font-bold mb-2">ご希望のサイト規模</label>
+                                     <div class="flex items-center">
+                                         <input type="range" id="pages" name="pages" min="1" max="5" value="3" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                         <span id="pages-value" class="ml-4 font-bold text-blue-600 w-20 text-center">3 ページ</span>
+                                     </div>
+                                 </div>
+                                 <div class="mb-6">
+                                     <h4 class="font-bold mb-3">こだわりたいポイント（複数選択可）</h4>
+                                     <div class="space-y-2">
+                                         <label class="flex items-center"><input type="checkbox" data-price="50000" data-type="fixed" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">出張素材撮影</span></label>
+                                         <label class="flex items-center"><input type="checkbox" data-price="10000" data-type="per-page" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">アニメーション挿入</span></label>
+                                         <label class="flex items-center"><input type="checkbox" data-price="10000" data-type="fixed" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">サーバー・ドメイン設定サポート</span></label>
+                                         <label class="flex items-center"><input type="checkbox" data-price="5000" data-type="fixed" class="feature-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> <span class="ml-2">月間サポート</span></label>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="text-center bg-blue-50 p-8 rounded-lg flex flex-col justify-center">
+                             <p class="text-lg text-gray-700">概算お見積もり金額</p>
+                             <p class="text-4xl md:text-5xl font-bold text-blue-600 my-2">¥<span id="total-price">270,000</span></p>
+                             <p class="text-sm text-gray-500">※あくまで概算です。詳細はお問い合わせください。</p>
+                             <a id="consult-button" href="https://docs.google.com/forms/d/1FlBLclytlJ1XrCj7KBBqdTyyX-oQEewFPvrbkxdUdj0/edit#responses" target="_blank" rel="noopener" class="mt-6 inline-block bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300 shadow-md">この内容で相談する</a>
+                         </div>
+                     </div>
                      <p class="text-xs text-gray-500 mt-6 text-center">
-                        ※月間サポートは簡単な文章の変更などを毎月こちらで対応させて頂きます。<br>
-                        費用は毎月発生致します。
-                    </p>
+                         ※月間サポートは簡単な文章の変更などを毎月こちらで対応させて頂きます。<br>
+                         費用は毎月発生致します。
+                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- ⑧ お問い合わせ -->
         <section id="contact" class="py-20 bg-slate-100 text-gray-800">
             <div class="container mx-auto px-6 text-center">
-                 <h2 class="text-3xl md:text-4xl font-bold mb-4">お話を聞かせてください。</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">お話を聞かせてください。</h2>
                 <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
                     迷ったらまずはお気軽にご連絡ください。<br>
                     私たちと一緒に小さな一歩から始めていきましょう。
                 </p>
                 
-                <div class="mt-16 max-w-4xl mx-auto bg-white text-gray-800 p-8 rounded-lg shadow-2xl">
-                    <form action="#" method="POST">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-left font-semibold mb-2">お名前</label>
-                                <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none" required>
-                            </div>
-                            <div>
-                                <label for="email" class="block text-left font-semibold mb-2">メールアドレス</label>
-                                <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none" required>
-                            </div>
-                        </div>
-                        <div class="mt-6">
-                            <label for="message" class="block text-left font-semibold mb-2">お問い合わせ内容</label>
-                            <textarea id="message" name="message" rows="5" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none" required></textarea>
-                        </div>
+                <div class="mt-16 max-w-4xl mx-auto text-gray-800">
+                    <form id="contact-form">
                         <div class="mt-8 text-center">
-                             <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg">送信する</button>
+                            <a href="https://docs.google.com/forms/d/1FlBLclytlJ1XrCj7KBBqdTyyX-oQEewFPvrbkxdUdj0/edit#responses" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg inline-block">お問い合わせ</a>
                         </div>
                     </form>
+                    <p id="form-status" class="mt-4 font-semibold"></p>
                 </div>
-
             </div>
         </section>
 
     </main>
 
-    <!-- ⑨ フッター -->
     <footer class="bg-white text-gray-800 footer-fade" id="site-footer">
         <div class="container mx-auto px-6 py-12">
             <div class="grid md:grid-cols-3 gap-8">
@@ -419,8 +392,8 @@
                 <div>
                     <h4 class="font-bold mb-4">その他</h4>
                      <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600 hover:text-blue-600">プライバシーポリシー</a></li>
-                        <li><a href="#contact" class="text-gray-600 hover:text-blue-600">お問い合わせ</a></li>
+                         <li><a href="#" class="text-gray-600 hover:text-blue-600">プライバシーポリシー</a></li>
+                         <li><a href="#contact" class="text-gray-600 hover:text-blue-600">お問い合わせ</a></li>
                     </ul>
                 </div>
             </div>
@@ -536,16 +509,20 @@
             calculatePrice();
         }
 
-        // Populate contact message from simulator selections
+        // Populate Google Form with simulator selections and open in new tab
         const consultButton = document.getElementById('consult-button');
+        // Set your Google Form base URL and entry ID for the 「お問い合わせ内容」 field
+        const GOOGLE_FORM_BASE = 'https://docs.google.com/forms/d/e/1FAIpQLSeh-rXYk-w5mFhdiMZgPkx0cHvrfGBBMcDsvZWvMImdoarUHQ/viewform';
+        const GOOGLE_FORM_ENTRY_MESSAGE = '1215662071'; // provided by user
+
         if (consultButton) {
-            consultButton.addEventListener('click', () => {
+            consultButton.addEventListener('click', (e) => {
                 try {
+                    // Build message text from current simulator selections
                     const pages = pagesSlider ? parseInt(pagesSlider.value) : null;
                     const selectedFeatures = [];
                     featureCheckboxes.forEach(cb => {
                         if (cb.checked) {
-                            // Get the label text next to the checkbox
                             const labelText = cb.closest('label')?.innerText?.trim() || '';
                             if (labelText) selectedFeatures.push(labelText);
                         }
@@ -562,15 +539,19 @@
                         lines.push('選択オプション: なし');
                     }
                     if (total) lines.push(`概算金額: ¥${total}`);
-                    // 文末の定型文は追加しない
 
-                    const messageEl = document.getElementById('message');
-                    if (messageEl) {
-                        const prefixBlank = '\n\n\n\n';
-                        messageEl.value = prefixBlank + lines.join('\n');
+                    const message = lines.join('\n');
+
+                    // If entry ID is set, open a prefilled URL; otherwise fall back to default link
+                    if (GOOGLE_FORM_ENTRY_MESSAGE && GOOGLE_FORM_ENTRY_MESSAGE !== 'REPLACE_WITH_ENTRY_ID') {
+                        e.preventDefault();
+                        const params = new URLSearchParams();
+                        params.set(`entry.${GOOGLE_FORM_ENTRY_MESSAGE}`, message);
+                        const prefillUrl = `${GOOGLE_FORM_BASE}?${params.toString()}`;
+                        window.open(prefillUrl, '_blank', 'noopener');
                     }
-                } catch (e) {
-                    // Fail silently; user can still fill manually
+                } catch (e2) {
+                    // Ignore errors and allow default link behavior
                 }
             });
         }
@@ -589,6 +570,46 @@
             }, { threshold: 0.1 });
             observer.observe(footer);
         })();
+
+        // --- ここからお問い合わせフォームの送信処理を追加 ---
+        const contactForm = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // ページのリロードを防ぐ
+                
+                formStatus.textContent = '送信中...';
+                formStatus.classList.remove('text-green-600', 'text-red-600');
+
+                const formData = {
+                    name: contactForm.name.value,
+                    email: contactForm.email.value,
+                    message: contactForm.message.value,
+                };
+
+                try {
+                    const response = await fetch('/api/send', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData),
+                    });
+
+                    if (response.ok) {
+                        formStatus.textContent = 'お問い合わせありがとうございます。メッセージは正常に送信されました。';
+                        formStatus.classList.add('text-green-600');
+                        contactForm.reset();
+                    } else {
+                        formStatus.textContent = 'エラーが発生しました。もう一度お試しください。';
+                        formStatus.classList.add('text-red-600');
+                    }
+                } catch (error) {
+                    formStatus.textContent = '送信中にエラーが発生しました。';
+                    formStatus.classList.add('text-red-600');
+                }
+            });
+        }
+        // --- ここまで追加 ---
 
     </script>
 

@@ -261,7 +261,7 @@
         .carousel {
             background: #111827; /* gray-900 */
             width: 90%;
-            max-width: 1200px; /* 安定表示のため標準幅に戻す */
+            max-width: 1200px; /* 参照レイアウトに合わせて標準幅 */
             border-radius: 12px;
             padding: 12px 0;
             /* パララックス削除: 3D設定を無効化 */
@@ -273,15 +273,52 @@
         }
         /* Flickity初期化後はFlickityのレイアウトに任せる */
         .flickity-enabled.carousel { display: block; gap: 0; }
-        .flickity-enabled .carousel-cell { margin: 0 12px; }
+        .flickity-enabled .carousel-cell { margin: 0 20px 0 0; } /* 参照コードと同じスペーシング */
+        /* 内側のデフォルト矢印ボタンを非表示にする */
+        .flickity-prev-next-button { display: none !important; }
         /* Flickity viewportのクリッピングを解除して、前後の画像が見切れず残るように */
         .flickity-viewport { overflow: visible !important; }
+        /* カスタム操作ボタン（ダブルシェブロン） */
+        /* 画面左右端に固定するナビゲーション（上下中央） */
+        .control-edge {
+            position: fixed;
+            top: calc(50% + 250px);
+            transform: translateY(-50%);
+            z-index: 10001;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: auto; /* アイコンのみ表示 */
+            height: auto; /* アイコンのみ表示 */
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            transition: transform .15s ease;
+            pointer-events: auto;
+            padding: 8px; /* クリックしやすさだけ確保（視覚的には透明） */
+        }
+        /* 画面中央に寄せて、左右に程よい間隔で配置 */
+        .control-edge.left { left: calc(50% - 120px); }
+        .control-edge.right { left: calc(50% + 120px); }
+        .control-edge:hover { transform: translateY(-50%) scale(1.05); }
+        .chevrons { width: 56px; height: 56px; }
+
+        /* 中央スライドを大きく、周辺を少し小さく */
+        .carousel-cell {
+            transition: transform .35s ease, opacity .35s ease;
+            opacity: 0.7;
+        }
+        .carousel-cell.is-selected {
+            transform: scale(1.06);
+            opacity: 1;
+            z-index: 2;
+        }
         /* レイヤー8（ギャラリー）はクリック操作を有効化 */
         #layer-8 { pointer-events: auto; }
         #layer-8 * { pointer-events: auto; }
         .carousel-cell {
-            width: 280px;  /* 既定値に戻す */
-            height: 200px;
+            width: auto;  /* 参照コードは幅指定なし */
+            height: auto;
             margin: 0 12px; /* 左右対称のスペーシング */
             overflow: hidden; /* 統一した矩形で切り抜き */
             border-radius: 8px;
@@ -293,15 +330,53 @@
         }
         .carousel-cell img {
             display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 縦横比を保ちつつフィット */
+            height: 200px; /* 参照コードに合わせ固定高さ */
+            width: auto;   /* 縦基準でスケール */
         }
         @media screen and (min-width: 768px) {
-            .carousel-cell { width: 560px; height: 400px; }
+            .carousel-cell img { height: 400px; }
         }
 
-        /* Layer 9 removed */
+        /* レイヤー9: LINK セクション（ギャラリーの次） */
+        #layer-9 {
+            transform: translateZ(-4000px);
+            opacity: 0;
+            transition: opacity 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            pointer-events: auto;
+        }
+        #layer-9 * { pointer-events: auto; }
+        .link-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+        .social-icons {
+            display: flex;
+            gap: 28px;
+        }
+        .icon-link {
+            width: 120px;
+            height: 120px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            /* 黒の内側 + 細い銀のリング枠 */
+            border: 1px solid transparent;
+            background:
+              linear-gradient(#0a0a12, #0a0a12) padding-box,
+              linear-gradient(135deg, #ffffff 0%, #e2e8f0 25%, #94a3b8 50%, #e2e8f0 75%, #ffffff 100%) border-box;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 2px 8px rgba(255,255,255,0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .icon-link:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 10px 24px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.08); }
+        .icon-svg { width: 64px; height: 64px; display: block; }
+        /* LINK見出しの位置を20px上げる */
+        .link-title { margin-top: -20px; }
 
     </style>
 </head>
@@ -311,7 +386,7 @@
         <div id="scene-rotator">
             <div id="layer-7" class="layer">
                 <div id="message-text">
-                    <span class="message-line">ようこそ、この静かな画の間へ。</span>
+                    <span class="message-line">ようこそ、静かな画の間へ。</span>
                     <span class="message-line">心に残る一瞬と出会えますように。</span>
                 </div>
             </div>
@@ -334,7 +409,98 @@
                         <img src="image/art-5.jpg" alt="Artwork 5">
                     </div>
                 </div>
-                
+                <!-- 画面左右端のナビゲーションボタン -->
+                <button id="carousel-prev" class="control-edge left" aria-label="Prev">
+                        <svg class="chevrons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="grad-silver-controls" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffffff"/>
+                                    <stop offset="25%" stop-color="#e2e8f0"/>
+                                    <stop offset="50%" stop-color="#94a3b8"/>
+                                    <stop offset="75%" stop-color="#e2e8f0"/>
+                                    <stop offset="100%" stop-color="#ffffff"/>
+                                </linearGradient>
+                            </defs>
+                            <g fill="none" stroke="url(#grad-silver-controls)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 6 L9 12 L15 18"/>
+                                <path d="M19 6 L13 12 L19 18"/>
+                            </g>
+                        </svg>
+                </button>
+                <button id="carousel-next" class="control-edge right" aria-label="Next">
+                        <svg class="chevrons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="grad-silver-controls-r" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffffff"/>
+                                    <stop offset="25%" stop-color="#e2e8f0"/>
+                                    <stop offset="50%" stop-color="#94a3b8"/>
+                                    <stop offset="75%" stop-color="#e2e8f0"/>
+                                    <stop offset="100%" stop-color="#ffffff"/>
+                                </linearGradient>
+                            </defs>
+                            <g fill="none" stroke="url(#grad-silver-controls-r)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 6 L15 12 L9 18"/>
+                                <path d="M5 6 L11 12 L5 18"/>
+                            </g>
+                        </svg>
+                </button>
+            
+            </div>
+            <!-- レイヤー9: LINK セクション -->
+            <div id="layer-9" class="layer" style="opacity:0;">
+                <div class="link-section text-center">
+                    <h2 class="text-4xl md:text-6xl text-white font-serif gradient-silver link-title">LINK</h2>
+                    <div class="social-icons">
+                        <!-- X / Twitter -->
+                        <a class="icon-link" href="https://x.com/" target="_blank" rel="noopener" aria-label="X">
+                            <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="grad-x" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="100%" stop-color="#cbd5e1"/>
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#grad-x)" d="M18.244 2H21l-6.5 7.43L22 22h-6.844l-4.26-5.5L5.9 22H3.143l7.02-8.015L2 2h6.93l3.86 4.94L18.244 2zm-1.2 18h2.067L8.026 4H5.86l11.184 16z"/>
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a class="icon-link" href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+                            <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="grad-ig" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="100%" stop-color="#cbd5e1"/>
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#grad-ig)" d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H7zm5 3a5 5 0 110 10 5 5 0 010-10zm6-0.5a1 1 0 110 2 1 1 0 010-2z"/>
+                            </svg>
+                        </a>
+                        <!-- YouTube -->
+                        <a class="icon-link" href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
+                            <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="grad-yt" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="100%" stop-color="#cbd5e1"/>
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#grad-yt)" d="M21.8 8.001a3 3 0 00-2.113-2.124C18.07 5.5 12 5.5 12 5.5s-6.07 0-7.687.377A3 3 0 002.2 8.001 31.41 31.41 0 002 12a31.41 31.41 0 00.2 3.999 3 3 0 002.113 2.124C5.93 18.5 12 18.5 12 18.5s6.07 0 7.687-.377A3 3 0 0021.8 16A31.41 31.41 0 0022 12a31.41 31.41 0 00-.2-3.999zM10 9.75l5 2.25-5 2.25v-4.5z"/>
+                            </svg>
+                        </a>
+                        <!-- Facebook -->
+                        <a class="icon-link" href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+                            <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="grad-fb" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="100%" stop-color="#cbd5e1"/>
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#grad-fb)" d="M22 12a10 10 0 10-11.563 9.874v-6.985H7.898V12h2.54V9.797c0-2.506 1.492-3.89 3.776-3.89 1.094 0 2.238.196 2.238.196v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.889h-2.33v6.985A10 10 0 0022 12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
             <div id="layer-6" class="layer">
                 <h2 id="hello-text" class="text-4xl md:text-6xl text-white font-serif gradient-silver">GALLERY</h2>
@@ -409,7 +575,7 @@
                     // 無限ループ
                     wrapAround: true,
                     // スクロールフィールの調整（自然な慣性）
-                    freeScroll: true,
+                    freeScroll: false,
                     selectedAttraction: 0.015,
                     friction: 0.25,
                     dragThreshold: 3,
@@ -417,7 +583,7 @@
                     contain: true,
                     // Aパターン用の操作UI
                     draggable: true,
-                    prevNextButtons: true,
+                    prevNextButtons: false,
                     pageDots: true,
                     // 中央基準で複数枚を横並び
                     cellAlign: 'center'
@@ -426,8 +592,22 @@
                 flkty.on('imagesLoaded', () => flkty.resize());
                 galleryCells = Array.from(carouselEl.querySelectorAll('.carousel-cell'));
                 galleryImgs = Array.from(carouselEl.querySelectorAll('.carousel-cell img'));
+                // 参照コードのパララックス効果: スクロールに応じて画像を水平移動
+                flkty.on('scroll', () => {
+                    flkty.slides.forEach((slide, i) => {
+                        const img = galleryImgs[i];
+                        if (!img) return;
+                        const x = (slide.target + flkty.x) * -1/3;
+                        img.style[transformProp] = `translateX(${x}px)`;
+                    });
+                });
             };
             initGallery();
+            // カスタムボタンと連携
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            if (prevBtn) prevBtn.addEventListener('click', () => { if (flkty) flkty.previous(true); });
+            if (nextBtn) nextBtn.addEventListener('click', () => { if (flkty) flkty.next(true); });
             
             // --- サウンド設定 ---
             let ambientSynth, noise, wind;

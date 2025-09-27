@@ -261,7 +261,7 @@
         .carousel {
             background: #111827; /* gray-900 */
             width: 90%;
-            max-width: 1200px;
+            max-width: 1200px; /* 安定表示のため標準幅に戻す */
             border-radius: 12px;
             padding: 12px 0;
             /* パララックス削除: 3D設定を無効化 */
@@ -269,7 +269,7 @@
             display: flex;
             align-items: center;
             gap: 24px;
-            overflow: hidden;
+            overflow: visible; /* 隣接スライドを覗かせる */
         }
         /* Flickity初期化後はFlickityのレイアウトに任せる */
         .flickity-enabled.carousel { display: block; gap: 0; }
@@ -280,7 +280,7 @@
         #layer-8 { pointer-events: auto; }
         #layer-8 * { pointer-events: auto; }
         .carousel-cell {
-            width: 280px;
+            width: 280px;  /* 既定値に戻す */
             height: 200px;
             margin: 0 12px; /* 左右対称のスペーシング */
             overflow: hidden; /* 統一した矩形で切り抜き */
@@ -408,7 +408,7 @@
                     // スクロールフィールの調整（自然な慣性）
                     selectedAttraction: 0.02,
                     friction: 0.3,
-                    // 1列で見切れないよう端を内側に収める
+                    // レイアウトの安定化: 端の収まり制約を有効化
                     contain: true,
                     // Aパターン用の操作UI
                     draggable: true,
@@ -421,15 +421,6 @@
                 flkty.on('imagesLoaded', () => flkty.resize());
                 galleryCells = Array.from(carouselEl.querySelectorAll('.carousel-cell'));
                 galleryImgs = Array.from(carouselEl.querySelectorAll('.carousel-cell img'));
-                // パララックス効果を無効化: スクロール時に変形をリセット
-                flkty.on('scroll', () => {
-                    flkty.slides.forEach((slide, i) => {
-                        const img = galleryImgs[i];
-                        const cell = galleryCells[i];
-                        if (img) img.style[transformProp] = '';
-                        if (cell) cell.style[transformProp] = '';
-                    });
-                });
             };
             initGallery();
             

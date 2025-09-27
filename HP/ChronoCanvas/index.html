@@ -287,6 +287,9 @@
             border-radius: 8px;
             display: block;       /* Flickity互換 */
             flex: 0 0 auto;       /* フォールバック時に固定幅アイテムとして並べる */
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
         .carousel-cell img {
             display: block;
@@ -406,8 +409,10 @@
                     // 無限ループ
                     wrapAround: true,
                     // スクロールフィールの調整（自然な慣性）
-                    selectedAttraction: 0.02,
-                    friction: 0.3,
+                    freeScroll: true,
+                    selectedAttraction: 0.015,
+                    friction: 0.25,
+                    dragThreshold: 3,
                     // レイアウトの安定化: 端の収まり制約を有効化
                     contain: true,
                     // Aパターン用の操作UI
@@ -645,20 +650,20 @@
                             }, 2000);
                             break;
 
-                        case 2: // メッセージ -> Welcome
-                            // メッセージを消してWelcomeへ
+                        case 2: // メッセージ -> Welcome（GALLERYテキストと同じ消え方）
+                            // テキストは6s、コンテナも同時にフェード（Welcome時と統一）
+                            messageText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                            helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
                             messageText.style.opacity = '0';
                             // 中央固定を維持
                             rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                             scene.style.transform = `translateZ(3000px)`;
-                            setTimeout(() => {
-                                layer7.style.opacity = '0';
-                                layer6.style.opacity = '1';
-                                helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
-                                helloText.style.transitionDelay = '0s';
-                                helloText.style.opacity = '1';
-                            }, 1000);
-                            // Welcome表示中でも次へ進めるようロック解除
+                            // コンテナのフェードも同時開始（Welcomeの消え方に合わせる）
+                            layer7.style.opacity = '0';
+                            layer6.style.opacity = '1';
+                            helloText.style.transitionDelay = '0s';
+                            helloText.style.opacity = '1';
+                            // ロック解除は従来と同程度のタイミングで
                             setTimeout(() => {
                                 scrollStage = 3;
                                 isAnimating = false;

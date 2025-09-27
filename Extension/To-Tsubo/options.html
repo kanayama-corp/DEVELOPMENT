@@ -25,6 +25,28 @@
     </div>
 
     <div class="section">
+      <h2>コピー用ショートカット</h2>
+      <p class="description">
+        坪数をコピーするためのショートカットキーを設定できます。<br>
+        未設定の場合は、ポップアップが開いている状態で Cmd/Ctrl + C でコピーできます。
+      </p>
+
+      <div class="shortcut-info">
+        <label>現在のコピーショートカット:</label>
+        <div class="current-shortcut" id="current-copy-shortcut">未設定（Cmd/Ctrl + C ）</div>
+      </div>
+
+      <div class="shortcut-input-section">
+        <label for="shortcut-input">新しいショートカットを入力（この欄を選択してキーを押してください）</label>
+        <input id="shortcut-input" type="text" placeholder="例: Ctrl+Shift+Y" readonly>
+        <div class="shortcut-buttons">
+          <button id="save-shortcut" class="btn btn-primary">保存</button>
+          <button id="reset-shortcut" class="btn btn-secondary">リセット</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
       <h2>使用方法</h2>
       <ul>
         <li>平米数を入力すると、自動的に坪数に変換されます</li>

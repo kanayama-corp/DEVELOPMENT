@@ -60,9 +60,9 @@
         }
 
 
-        /* レイヤー6: 店内 */
+        /* レイヤー6: 店内（順序入れ替え後はメッセージの後方に配置） */
         #layer-6 {
-            transform: translateZ(-2000px);
+            transform: translateZ(-3000px);
             opacity: 0;
             /* ★遅延を削除し、スムーズなクロスフェードを可能に */
             transition: opacity 8s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -73,9 +73,9 @@
             align-items: center !important;
         }
 
-        /* レイヤー7: メッセージセクション */
+        /* レイヤー7: メッセージセクション（順序入れ替え後はWelcomeの手前に配置） */
         #layer-7 {
-            transform: translateZ(-3000px);
+            transform: translateZ(-2000px);
             opacity: 0;
             transition: opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1);
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -169,6 +169,8 @@
             transition: all 1.5s ease-in-out, opacity 1s ease-out 0.5s;
             outline: none; 
             backface-visibility: hidden;
+            /* トップページの画像を20px上へ移動（transformと競合しないようmarginで調整） */
+            margin-top: -80px;
         }
         
         /* レイヤー3: パーティクル */
@@ -263,7 +265,15 @@
             border-radius: 12px;
             padding: 12px 0;
             /* パララックス削除: 3D設定を無効化 */
+            /* Flickity未初期化時のフォールバックとして横並びに */
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            overflow: hidden;
         }
+        /* Flickity初期化後はFlickityのレイアウトに任せる */
+        .flickity-enabled.carousel { display: block; gap: 0; }
+        .flickity-enabled .carousel-cell { margin: 0 12px; }
         /* Flickity viewportのクリッピングを解除して、前後の画像が見切れず残るように */
         .flickity-viewport { overflow: visible !important; }
         /* レイヤー8（ギャラリー）はクリック操作を有効化 */
@@ -275,24 +285,20 @@
             margin: 0 12px; /* 左右対称のスペーシング */
             overflow: hidden; /* 統一した矩形で切り抜き */
             border-radius: 8px;
-            /* パララックス削除: トランスフォームのトランジション無効化 */
-            transition: none;
+            display: block;       /* Flickity互換 */
+            flex: 0 0 auto;       /* フォールバック時に固定幅アイテムとして並べる */
         }
         .carousel-cell img {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: cover; /* 縦横比を保ちつつフィット */
-            /* さっきの状態へ戻す: 余計なスケールやトランジションを無効化 */
-            transition: none;
-            transform: none;
         }
         @media screen and (min-width: 768px) {
-            .carousel-cell {
-                width: 560px;
-                height: 400px;
-            }
+            .carousel-cell { width: 560px; height: 400px; }
         }
+
+        /* Layer 9 removed */
 
     </style>
 </head>
@@ -302,9 +308,8 @@
         <div id="scene-rotator">
             <div id="layer-7" class="layer">
                 <div id="message-text">
-                    <span class="message-line">一瞬は儚く、しかし無限に美しい。</span>
-                    <span class="message-line">その瞬間を捉え</span>
-                    <span class="message-line">永遠に輝き続けるアートピースとして昇華させる。</span>
+                    <span class="message-line">ようこそ、この静かな画の間へ。</span>
+                    <span class="message-line">心に残る一瞬と出会えますように。</span>
                 </div>
             </div>
             <!-- レイヤー8: ギャラリー（Flickity） -->
@@ -326,9 +331,10 @@
                         <img src="image/art-5.jpg" alt="Artwork 5">
                     </div>
                 </div>
+                
             </div>
             <div id="layer-6" class="layer">
-                <h2 id="hello-text" class="text-4xl md:text-6xl text-white font-serif">Welcome</h2>
+                <h2 id="hello-text" class="text-4xl md:text-6xl text-white font-serif gradient-silver">GALLERY</h2>
             </div>
             <div id="layer-5" class="layer">
                 
@@ -372,6 +378,7 @@
             const layer6 = document.getElementById('layer-6');
             const layer7 = document.getElementById('layer-7');
             const layer8 = document.getElementById('layer-8');
+            const layer9 = document.getElementById('layer-9');
             const helloText = document.getElementById('hello-text');
             const messageText = document.getElementById('message-text');
             const particleContainer = document.getElementById('layer-3');
@@ -396,14 +403,22 @@
                 flkty = new Flickity(carouselEl, {
                     imagesLoaded: true,
                     percentPosition: false,
+                    // 無限ループ
                     wrapAround: true,
+                    // スクロールフィールの調整（自然な慣性）
                     selectedAttraction: 0.02,
                     friction: 0.3,
-                    contain: false,
+                    // 1列で見切れないよう端を内側に収める
+                    contain: true,
+                    // Aパターン用の操作UI
+                    draggable: true,
                     prevNextButtons: true,
                     pageDots: true,
+                    // 中央基準で複数枚を横並び
                     cellAlign: 'center'
                 });
+                flkty.on('ready', () => flkty.resize());
+                flkty.on('imagesLoaded', () => flkty.resize());
                 galleryCells = Array.from(carouselEl.querySelectorAll('.carousel-cell'));
                 galleryImgs = Array.from(carouselEl.querySelectorAll('.carousel-cell img'));
                 // パララックス効果を無効化: スクロール時に変形をリセット
@@ -525,6 +540,15 @@
                     }
 
                     switch (scrollStage) {
+                        case 5: // ボタンセクション -> ギャラリー（戻る）
+                            layer9.style.opacity = '0';
+                            scene.style.transform = `translateZ(3500px)`;
+                            setTimeout(() => {
+                                layer8.style.opacity = '1';
+                                scrollStage = 4;
+                                isAnimating = false;
+                            }, 1000);
+                            break;
                         case 4: // ギャラリー -> メッセージ（戻る）
                             isAnimating = true;
                             // ギャラリーを消してメッセージへ
@@ -589,7 +613,7 @@
                 
                 // --- 下スクロール（進む）---
                 if (e.deltaY > 0) {
-                    if (scrollStage >= 4) return;
+                    if (scrollStage >= 5) return;
                     isAnimating = true;
                     if (soundEnabled) {
                         wind.volume.rampTo(-20, 0.1);
@@ -607,18 +631,21 @@
                             }, 2000);
                             break;
                         
-                        case 1: // アートワーク前 -> Welcome
+                        case 1: // アートワーク前 -> メッセージ
                             layer4Img.style.transform = 'scale(2)';
                             layer4Img.style.opacity = '0';
                             layer5.style.opacity = '0';
                             setTimeout(() => {
-                                layer6.style.opacity = '1';
-                                helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
-                                helloText.style.transitionDelay = '0s';
-                                helloText.style.opacity = '1';
+                                layer7.style.opacity = '1';
+                                messageText.style.opacity = '1';
+                                // 各行を段階的にフェードイン
+                                const messageLinesInit = document.querySelectorAll('.message-line');
+                                messageLinesInit.forEach((line, index) => {
+                                    setTimeout(() => { line.style.opacity = '1'; }, index * 2500);
+                                });
                             }, 1000);
                             scene.style.transform = `translateZ(2000px)`;
-                            // Welcome開始時点で即座に中央固定にする
+                            // メッセージ開始時点で即座に中央固定にする
                             rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                             // マウス移動なしでも中央表示されるよう、ステージを先に進める
                             scrollStage = 2;
@@ -627,46 +654,48 @@
                             }, 2000);
                             break;
 
-                        case 2: // Welcome -> メッセージ
-                            // Helloテキストをゆっくりと消す
-                            helloText.style.transition = 'opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1)';
-                            helloText.style.opacity = '0';
+                        case 2: // メッセージ -> Welcome
+                            // メッセージを消してWelcomeへ
+                            messageText.style.opacity = '0';
                             // 中央固定を維持
                             rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                             scene.style.transform = `translateZ(3000px)`;
                             setTimeout(() => {
-                                layer6.style.opacity = '0';
-                                layer7.style.opacity = '1';
-                                messageText.style.opacity = '1';
-
-                                // 各行を段階的にフェードイン
-                                const messageLines = document.querySelectorAll('.message-line');
-                                messageLines.forEach((line, index) => {
-                                    setTimeout(() => {
-                                        line.style.opacity = '1';
-                                    }, index * 2500); // 2.5秒間隔で表示（少し遅く）
-                                });
+                                layer7.style.opacity = '0';
+                                layer6.style.opacity = '1';
+                                helloText.style.transition = 'opacity 6s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                                helloText.style.transitionDelay = '0s';
+                                helloText.style.opacity = '1';
                             }, 1000);
-                            // メッセージ表示中でも次のセクションへ進めるよう、ロックを早めに解除
+                            // Welcome表示中でも次へ進めるようロック解除
                             setTimeout(() => {
                                 scrollStage = 3;
                                 isAnimating = false;
                             }, 1500);
                             break;
-                        case 3: // メッセージ -> ギャラリー
-                            // メッセージを消し、ギャラリーを表示
-                            messageText.style.opacity = '0';
-                            layer7.style.opacity = '0';
+                        case 3: // Welcome -> ギャラリー
+                            // Welcomeを消し、ギャラリーを表示
+                            helloText.style.opacity = '0';
+                            layer6.style.opacity = '0';
                             // 中央固定のまま更に奥へ
                             rotator.style.transform = 'rotateX(0deg) rotateY(0deg)';
                             scene.style.transform = `translateZ(3500px)`;
                             setTimeout(() => {
                                 layer8.style.opacity = '1';
+                                // ギャラリー表示後に再レイアウト
+                                if (!flkty) initGallery();
+                                if (flkty) flkty.resize();
                             }, 400);
                             setTimeout(() => {
                                 scrollStage = 4;
                                 isAnimating = false;
                             }, 1500);
+                            break;
+                        case 4: // ギャラリー -> ボタンセクション
+                            layer8.style.opacity = '0';
+                            scene.style.transform = `translateZ(4000px)`;
+                            setTimeout(() => { layer9.style.opacity = '1'; }, 300);
+                            setTimeout(() => { scrollStage = 5; isAnimating = false; }, 1200);
                             break;
                     }
                 }

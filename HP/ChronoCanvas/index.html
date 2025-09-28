@@ -405,6 +405,25 @@
         }
         .gallery-hint:hover { opacity: 0.75; }
 
+        /* ギャラリータイトル（下部中央、控えめな表示） */
+        .gallery-title {
+            position: absolute;
+            left: 50%;
+            bottom: 14px;
+            transform: translateX(-50%);
+            font-size: 1.05rem;
+            letter-spacing: 0.08em;
+            opacity: 0.85;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(2px);
+            color: #e5e7eb;
+            z-index: 1200;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
         /* レイヤー8（ギャラリー）は初期は非表示・非アクティブ */
         #layer-8 { pointer-events: none; }
         
@@ -474,6 +493,7 @@
                     <img src="image/art-4.jpg" alt="Artwork 4" />
                     <img src="image/art-5.jpg" alt="Artwork 5" />
                     <div class="gallery-hint">Rキーで順番に前面へ</div>
+                    <div class="gallery-title">静穏の花庭</div>
                 </div>
             </div>
             <!-- レイヤー9: LINK セクション -->
@@ -682,6 +702,22 @@
                 const ordered = imgs.slice().sort((a, b) => (a.getAttribute('src') || '').localeCompare(b.getAttribute('src') || ''));
                 let cycleIndex = 0; // Rキーで前面に出す対象のインデックス
 
+                // タイトル要素と各画像タイトル
+                const titleEl = container.querySelector('.gallery-title');
+                const titles = {
+                    'image/art-1.jpg': '薄暁の庭詩',
+                    'image/art-2.jpg': '薄翠の余韻',
+                    'image/art-3.jpg': '雨音の記憶',
+                    'image/art-4.jpg': '灯火の夢路',
+                    'image/art-5.jpg': '静穏の花庭'
+                };
+                const updateTitle = (idx) => {
+                    if (!titleEl) return;
+                    const img = ordered[idx % ordered.length];
+                    const src = img ? img.getAttribute('src') : '';
+                    titleEl.textContent = titles[src] || 'ギャラリー';
+                };
+
                 const placeRandom = () => {
                     const cw = container.clientWidth;
                     const ch = container.clientHeight;
@@ -743,6 +779,7 @@
                     });
                     // ベースのz-indexを整えた後、現在の対象を最前面に
                     bringToFront(cycleIndex);
+                    updateTitle(cycleIndex);
                 };
 
                 // 指定インデックス（ordered内）の画像を最前面へ
@@ -785,7 +822,7 @@
 
                 // クリックで並び替え、'r'キーでも並び替え
                 container.addEventListener('click', () => {
-                    placeRandom();
+                    placeRandom(); // タイトル更新はplaceRandom内で実施
                 });
                 document.addEventListener('keydown', (e) => {
                     if (e.key.toLowerCase() === 'r') {

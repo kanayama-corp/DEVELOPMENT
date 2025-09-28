@@ -381,9 +381,11 @@
             object-fit: cover;
             border-radius: 0;
             box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-            transition: transform .6s cubic-bezier(0.25, 1, 0.5, 1), opacity .4s ease;
+            transition: transform .6s cubic-bezier(0.25, 1, 0.5, 1), opacity .4s ease, filter .3s ease;
+            filter: none;
             cursor: default;
         }
+        .random-gallery img.blurred { filter: blur(3px) brightness(0.85); }
         @media screen and (min-width: 1024px) {
             .random-gallery img { width: 560px; height: 373px; }
         }
@@ -494,7 +496,7 @@
                     <img src="image/art-5.jpg" alt="Artwork 5" />
                 </div>
                 <div class="gallery-title">静穏の花庭</div>
-                <div class="gallery-hint">次の作品へ（← →）</div>
+                <div class="gallery-hint">← 作品 →</div>
             </div>
             <!-- レイヤー9: LINK セクション -->
             <div id="layer-9" class="layer" style="opacity:0;">
@@ -788,10 +790,12 @@
                     ordered.forEach((img, i) => {
                         const existing = parseInt(img.style.zIndex || '10', 10);
                         img.style.zIndex = String(Math.max(10, existing));
+                        img.classList.add('blurred');
                     });
                     const target = ordered[idx % ordered.length];
                     if (target) {
                         target.style.zIndex = '999';
+                        target.classList.remove('blurred');
                     }
                 };
 

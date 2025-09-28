@@ -367,7 +367,7 @@
             position: relative;
             width: 90%;
             max-width: 1200px;
-            height: 560px;
+            height: 620px;
             margin-left: auto;
             margin-right: auto;
             background: #111827;
@@ -376,8 +376,8 @@
         }
         .random-gallery img {
             position: absolute;
-            width: 420px;
-            height: 280px;
+            width: 480px;
+            height: 320px;
             object-fit: cover;
             border-radius: 0;
             box-shadow: 0 12px 30px rgba(0,0,0,0.45);
@@ -385,7 +385,7 @@
             cursor: default;
         }
         @media screen and (min-width: 1024px) {
-            .random-gallery img { width: 500px; height: 333px; }
+            .random-gallery img { width: 560px; height: 373px; }
         }
 
         /* ギャラリーヒント（Rキーでシャッフル） */
@@ -473,7 +473,7 @@
                     <img src="image/art-3.jpg" alt="Artwork 3" />
                     <img src="image/art-4.jpg" alt="Artwork 4" />
                     <img src="image/art-5.jpg" alt="Artwork 5" />
-                    <div class="gallery-hint">Rキーで並び替え</div>
+                    <div class="gallery-hint">Rキーで順番に前面へ</div>
                 </div>
             </div>
             <!-- レイヤー9: LINK セクション -->
@@ -678,6 +678,9 @@
                 const container = document.querySelector('#layer-8 .random-gallery');
                 if (!container) return;
                 const imgs = Array.from(container.querySelectorAll('img'));
+                // art-1.jpg → art-5.jpg の順に並べ替えた配列
+                const ordered = imgs.slice().sort((a, b) => (a.getAttribute('src') || '').localeCompare(b.getAttribute('src') || ''));
+                let cycleIndex = 0; // Rキーで前面に出す対象のインデックス
 
                 const placeRandom = () => {
                     const cw = container.clientWidth;
@@ -734,10 +737,25 @@
 
                         img.style.transform = `translate(${Math.round(xPos)}px, ${Math.round(yPos)}px) rotate(${rot}deg) scale(${scale})`;
                         img.style.opacity = '1';
-                        img.style.zIndex = String(10 + Math.floor(Math.random()*30));
+                        img.style.zIndex = String(10 + Math.floor(Math.random()*10));
 
                         placed.push({x:xPos, y:yPos, w, h});
                     });
+                    // ベースのz-indexを整えた後、現在の対象を最前面に
+                    bringToFront(cycleIndex);
+                };
+
+                // 指定インデックス（ordered内）の画像を最前面へ
+                const bringToFront = (idx) => {
+                    // まず基準のz-indexを再設定（10〜）
+                    ordered.forEach((img, i) => {
+                        const existing = parseInt(img.style.zIndex || '10', 10);
+                        img.style.zIndex = String(Math.max(10, existing));
+                    });
+                    const target = ordered[idx % ordered.length];
+                    if (target) {
+                        target.style.zIndex = '999';
+                    }
                 };
 
                 // 画像読み込み待ち
@@ -771,7 +789,9 @@
                 });
                 document.addEventListener('keydown', (e) => {
                     if (e.key.toLowerCase() === 'r') {
+                        // 毎回ランダムに配置を変えつつ、トップは順番に切替
                         placeRandom();
+                        cycleIndex = (cycleIndex + 1) % ordered.length;
                     }
                 });
             };

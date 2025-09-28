@@ -773,7 +773,9 @@
                             yPos = Math.min(Math.max(padding, yPos + (Math.random()*56 - 28)), ch - h - padding);
                         }
 
-                        img.style.transform = `translate(${Math.round(xPos)}px, ${Math.round(yPos)}px) rotate(${rot}deg) scale(${scale})`;
+                        const base = `translate(${Math.round(xPos)}px, ${Math.round(yPos)}px) rotate(${rot}deg) scale(${scale})`;
+                        img.dataset.baseTransform = base; // アクティブ拡大用の基準を保存
+                        img.style.transform = base;
                         img.style.opacity = '1';
                         img.style.zIndex = String(10 + Math.floor(Math.random()*10));
 
@@ -791,11 +793,19 @@
                         const existing = parseInt(img.style.zIndex || '10', 10);
                         img.style.zIndex = String(Math.max(10, existing));
                         img.classList.add('blurred');
+                        // 非アクティブは基準トランスフォームに戻す
+                        if (img.dataset.baseTransform) {
+                            img.style.transform = img.dataset.baseTransform;
+                        }
                     });
                     const target = ordered[idx % ordered.length];
                     if (target) {
                         target.style.zIndex = '999';
                         target.classList.remove('blurred');
+                        // アクティブは1.3倍に拡大
+                        if (target.dataset.baseTransform) {
+                            target.style.transform = `${target.dataset.baseTransform} scale(1.3)`;
+                        }
                     }
                 };
 

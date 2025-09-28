@@ -474,6 +474,50 @@
         /* LINK見出しの位置を20px上げる */
         .link-title { margin-top: -20px; }
 
+        /* --- SNS Icons Entrance Animation (water/shimmer inspired) --- */
+        #layer-9 .icon-link { position: relative; overflow: hidden; isolation: isolate; }
+        #layer-9 .icon-link::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url(https://media0.giphy.com/media/3oEdvaxmd15YTHy6Uo/giphy.gif?cid=ecf05e47azzm1vgxel8zf4vjfphwcu5m9h4lfy1p27sko8uc&ep=v1_gifs_related&rid=giphy.gif&ct=g);
+            background-size: cover;
+            background-position: center;
+            filter: saturate(0);
+            mix-blend-mode: multiply;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #layer-9 .icon-link::after {
+            content: "";
+            position: absolute;
+            top: 0; left: -150%;
+            width: 200%; height: 100%;
+            background-image: linear-gradient(315deg, #000000 0%, #ffffff 50%);
+            mix-blend-mode: screen;
+            opacity: 0.0;
+            pointer-events: none;
+        }
+        #layer-9 .icon-svg { filter: blur(8px); opacity: 0.0; }
+
+        /* Triggered state */
+        #layer-9.animate-icons .icon-link::before { animation: darken 900ms ease-out forwards; }
+        #layer-9.animate-icons .icon-link::after { animation: move 1400ms ease-out forwards; opacity: 0.35; }
+        #layer-9.animate-icons .icon-svg { animation: blurIn 900ms ease-out forwards; }
+
+        @keyframes move {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-100%); }
+        }
+        @keyframes darken {
+          from { opacity: 1; }
+          to   { opacity: 0; }
+        }
+        @keyframes blurIn {
+          from { filter: blur(12px); opacity: 0; }
+          to   { filter: blur(0px);  opacity: 1; }
+        }
+
     </style>
 </head>
 <body class="bg-black">
@@ -1249,6 +1293,20 @@
 
             window.addEventListener('mousemove', handleMouseMove);
             window.addEventListener('wheel', handleScroll);
+
+            // --- SNSアイコンのエントランスアニメーション（表示時に一度だけ） ---
+            const layer9El = document.getElementById('layer-9');
+            if ('IntersectionObserver' in window && layer9El) {
+                const io = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            layer9El.classList.add('animate-icons');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { root: null, threshold: 0.35 });
+                io.observe(layer9El);
+            }
         });
     </script>
 </body>

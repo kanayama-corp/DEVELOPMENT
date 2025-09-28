@@ -257,27 +257,60 @@
             fill: black;
         }
 
-        /* --- Gallery (Flickity) Styles --- */
-        .carousel {
-            background: #111827; /* gray-900 */
+        /* --- Gallery (カスタム無限カルーセル) Styles --- */
+        .carousel-wrapper {
+            position: relative;
             width: 90%;
-            max-width: 1200px; /* 参照レイアウトに合わせて標準幅 */
+            max-width: 1200px;
+            height: auto;
+            overflow: visible;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111827;
             border-radius: 12px;
             padding: 12px 0;
-            /* パララックス削除: 3D設定を無効化 */
-            /* Flickity未初期化時のフォールバックとして横並びに */
+        }
+        .image-carousel {
             display: flex;
+            flex-direction: row;
+            width: auto;
+            height: 100%;
+            list-style: none;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            padding: 0;
+            margin: 0;
             align-items: center;
             gap: 24px;
-            overflow: visible; /* 隣接スライドを覗かせる */
         }
-        /* Flickity初期化後はFlickityのレイアウトに任せる */
-        .flickity-enabled.carousel { display: block; gap: 0; }
-        .flickity-enabled .carousel-cell { margin: 0 20px 0 0; } /* 参照コードと同じスペーシング */
-        /* 内側のデフォルト矢印ボタンを非表示にする */
-        .flickity-prev-next-button { display: none !important; }
-        /* Flickity viewportのクリッピングを解除して、前後の画像が見切れず残るように */
-        .flickity-viewport { overflow: visible !important; }
+        .image-carousel li {
+            flex-shrink: 0;
+            width: auto;
+            height: auto;
+            margin: 0 12px;
+            overflow: hidden;
+            border-radius: 8px;
+            display: block;
+            flex: 0 0 auto;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            transition: transform .35s ease, opacity .35s ease;
+            opacity: 0.7;
+        }
+        .image-carousel li.is-selected {
+            transform: scale(1.06);
+            opacity: 1;
+            z-index: 2;
+        }
+        .image-carousel li img {
+            display: block;
+            height: 200px;
+            width: auto;
+        }
+        @media screen and (min-width: 768px) {
+            .image-carousel li img { height: 400px; }
+        }
         /* カスタム操作ボタン（ダブルシェブロン） */
         /* 画面左右端に固定するナビゲーション（上下中央） */
         .control-edge {
@@ -303,38 +336,12 @@
         .control-edge:hover { transform: translateY(-50%) scale(1.05); }
         .chevrons { width: 56px; height: 56px; }
 
-        /* 中央スライドを大きく、周辺を少し小さく */
-        .carousel-cell {
-            transition: transform .35s ease, opacity .35s ease;
-            opacity: 0.7;
-        }
-        .carousel-cell.is-selected {
-            transform: scale(1.06);
-            opacity: 1;
-            z-index: 2;
-        }
         /* レイヤー8（ギャラリー）はクリック操作を有効化 */
         #layer-8 { pointer-events: auto; }
         #layer-8 * { pointer-events: auto; }
-        .carousel-cell {
-            width: auto;  /* 参照コードは幅指定なし */
-            height: auto;
-            margin: 0 12px; /* 左右対称のスペーシング */
-            overflow: hidden; /* 統一した矩形で切り抜き */
-            border-radius: 8px;
-            display: block;       /* Flickity互換 */
-            flex: 0 0 auto;       /* フォールバック時に固定幅アイテムとして並べる */
-            will-change: transform;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-        .carousel-cell img {
-            display: block;
-            height: 200px; /* 参照コードに合わせ固定高さ */
-            width: auto;   /* 縦基準でスケール */
-        }
-        @media screen and (min-width: 768px) {
-            .carousel-cell img { height: 400px; }
+        
+        @media screen and (max-width: 768px) {
+            .image-carousel li img { height: 250px; }
         }
 
         /* レイヤー9: LINK セクション（ギャラリーの次） */
@@ -390,24 +397,20 @@
                     <span class="message-line">心に残る一瞬と出会えますように。</span>
                 </div>
             </div>
-            <!-- レイヤー8: ギャラリー（Flickity） -->
+            <!-- レイヤー8: ギャラリー（カスタム無限カルーセル） -->
             <div id="layer-8" class="layer" style="opacity:0; transform: translateZ(-3500px); transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);">
-                <div class="carousel" data-flickity='{ "imagesLoaded": true, "percentPosition": false }'>
-                    <div class="carousel-cell">
-                        <img src="image/art-1.jpg" alt="Artwork 1">
-                    </div>
-                    <div class="carousel-cell">
-                        <img src="image/art-2.jpg" alt="Artwork 2">
-                    </div>
-                    <div class="carousel-cell">
-                        <img src="image/art-3.jpg" alt="Artwork 3">
-                    </div>
-                    <div class="carousel-cell">
-                        <img src="image/art-4.jpg" alt="Artwork 4">
-                    </div>
-                    <div class="carousel-cell">
-                        <img src="image/art-5.jpg" alt="Artwork 5">
-                    </div>
+                <div class="carousel-wrapper" data-img-num="5">
+                    <ul class="image-carousel">
+                        <li><img src="image/art-5.jpg" alt="Artwork 5"></li><!-- ダミー -->
+                        <li><img src="image/art-1.jpg" alt="Artwork 1"></li>
+                        <li><img src="image/art-2.jpg" alt="Artwork 2"></li>
+                        <li><img src="image/art-3.jpg" alt="Artwork 3"></li>
+                        <li><img src="image/art-4.jpg" alt="Artwork 4"></li>
+                        <li><img src="image/art-5.jpg" alt="Artwork 5"></li>
+                        <li><img src="image/art-1.jpg" alt="Artwork 1"></li><!-- ダミー -->
+                        <li><img src="image/art-2.jpg" alt="Artwork 2"></li><!-- ダミー -->
+                        <li><img src="image/art-3.jpg" alt="Artwork 3"></li><!-- ダミー -->
+                    </ul>
                 </div>
                 <!-- 画面左右端のナビゲーションボタン -->
                 <button id="carousel-prev" class="control-edge left" aria-label="Prev">
@@ -559,55 +562,90 @@
             let soundEnabled = false;
             let bgmEnabled = false;
 
-            // --- Flickity Carousel Init (Gallery) ---
-            const carouselEl = document.querySelector('#layer-8 .carousel');
-            let flkty = null;
-            let galleryImgs = [];
-            let galleryCells = [];
-            const docStyle = document.documentElement.style;
-            const transformProp = typeof docStyle.transform === 'string' ? 'transform' : 'WebkitTransform';
-
+            // --- カスタム無限カルーセル初期化 ---
             const initGallery = () => {
-                if (!carouselEl || flkty) return;
-                flkty = new Flickity(carouselEl, {
-                    imagesLoaded: true,
-                    percentPosition: false,
-                    // 無限ループ
-                    wrapAround: true,
-                    // スクロールフィールの調整（自然な慣性）
-                    freeScroll: false,
-                    selectedAttraction: 0.015,
-                    friction: 0.25,
-                    dragThreshold: 3,
-                    // レイアウトの安定化: 端の収まり制約を有効化
-                    contain: true,
-                    // Aパターン用の操作UI
-                    draggable: true,
-                    prevNextButtons: false,
-                    pageDots: true,
-                    // 中央基準で複数枚を横並び
-                    cellAlign: 'center'
-                });
-                flkty.on('ready', () => flkty.resize());
-                flkty.on('imagesLoaded', () => flkty.resize());
-                galleryCells = Array.from(carouselEl.querySelectorAll('.carousel-cell'));
-                galleryImgs = Array.from(carouselEl.querySelectorAll('.carousel-cell img'));
-                // 参照コードのパララックス効果: スクロールに応じて画像を水平移動
-                flkty.on('scroll', () => {
-                    flkty.slides.forEach((slide, i) => {
-                        const img = galleryImgs[i];
-                        if (!img) return;
-                        const x = (slide.target + flkty.x) * -1/3;
-                        img.style[transformProp] = `translateX(${x}px)`;
+                const wrapper = document.querySelector('#layer-8 .carousel-wrapper');
+                if (!wrapper) return;
+                
+                const slideWrapper = wrapper.querySelector('.image-carousel');
+                const slideElements = slideWrapper.querySelectorAll('li');
+                
+                const dataImgNum = wrapper.getAttribute('data-img-num');
+                if (!dataImgNum) return;
+                const imgNum = parseInt(dataImgNum);
+                
+                let slideIndex = 1; // 最初の実画像から開始
+                let startX = 0;
+                let endX = 0;
+                
+                // スライドの位置を更新
+                function updateSlidePosition(instant = false) {
+                    const slideSize = slideElements[0].offsetWidth + 24; // gap分を追加
+                    slideWrapper.style.transition = instant ? 'none' : 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+                    slideWrapper.style.transform = `translateX(${slideSize * slideIndex * -1}px)`;
+                    
+                    // アクティブクラスの更新（is-selectedクラスを使用）
+                    slideElements.forEach((slide, i) => {
+                        slide.classList.toggle('is-selected', i === slideIndex);
                     });
+                }
+                
+                // 次のスライドへ
+                function nextSlide() {
+                    if (slideIndex === imgNum) {
+                        slideIndex++;
+                        updateSlidePosition();
+                        setTimeout(() => {
+                            slideIndex = 1;
+                            updateSlidePosition(true);
+                        }, 800);
+                    } else {
+                        slideIndex++;
+                        updateSlidePosition();
+                    }
+                }
+                
+                // 前のスライドへ
+                function prevSlide() {
+                    if (slideIndex === 1) {
+                        slideIndex = 0;
+                        updateSlidePosition(true);
+                        setTimeout(() => {
+                            slideIndex = imgNum;
+                            updateSlidePosition();
+                        }, 50);
+                    } else {
+                        slideIndex--;
+                        updateSlidePosition();
+                    }
+                }
+                
+                // タッチイベント
+                slideWrapper.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
                 });
+                
+                slideWrapper.addEventListener('touchend', (e) => {
+                    endX = e.changedTouches[0].clientX;
+                    const swipeDistance = endX - startX;
+                    if (swipeDistance > 50) {
+                        prevSlide();
+                    } else if (swipeDistance < -50) {
+                        nextSlide();
+                    }
+                });
+                
+                // カスタムボタンとの連携
+                const prevBtn = document.getElementById('carousel-prev');
+                const nextBtn = document.getElementById('carousel-next');
+                if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+                if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+                
+                // 初期位置設定
+                updateSlidePosition(true);
             };
+            
             initGallery();
-            // カスタムボタンと連携
-            const prevBtn = document.getElementById('carousel-prev');
-            const nextBtn = document.getElementById('carousel-next');
-            if (prevBtn) prevBtn.addEventListener('click', () => { if (flkty) flkty.previous(true); });
-            if (nextBtn) nextBtn.addEventListener('click', () => { if (flkty) flkty.next(true); });
             
             // --- サウンド設定 ---
             let ambientSynth, noise, wind;

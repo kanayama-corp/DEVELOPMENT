@@ -358,9 +358,35 @@
         }
         /* 画面中央に寄せて、左右に程よい間隔で配置 */
         .control-edge.left { left: calc(50% - 180px); }
-        .control-edge.right { left: calc(50% + 130px); }
+        .control-edge.right { left: calc(50% + 150px); }
         .control-edge:hover { transform: translateY(-50%) scale(1.05); }
         .chevrons { width: 56px; height: 56px; }
+
+        /* --- Random Gallery Styles (no overflow) --- */
+        .random-gallery {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 520px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #111827;
+            border-radius: 12px;
+            overflow: hidden; /* prevent overflow */
+        }
+        .random-gallery img {
+            position: absolute;
+            width: 360px;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 0;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+            transition: transform .6s cubic-bezier(0.25, 1, 0.5, 1), opacity .4s ease;
+            cursor: default;
+        }
+        @media screen and (min-width: 1024px) {
+            .random-gallery img { width: 420px; height: 280px; }
+        }
 
         /* レイヤー8（ギャラリー）はクリック操作を有効化 */
         #layer-8 { pointer-events: auto; }
@@ -423,57 +449,15 @@
                     <span class="message-line">心に残る一瞬と出会えますように。</span>
                 </div>
             </div>
-            <!-- レイヤー8: ギャラリー（カスタム無限カルーセル） -->
-            <div id="layer-8" class="layer" style="opacity:0; transform: translateZ(-3500px); transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);">
-                <div class="carousel-wrapper" data-img-num="5">
-                    <ul class="image-carousel">
-                        <li><img src="image/art-5.jpg" alt="Artwork 5"></li><!-- ダミー -->
-                        <li><img src="image/art-1.jpg" alt="Artwork 1"></li>
-                        <li><img src="image/art-2.jpg" alt="Artwork 2"></li>
-                        <li><img src="image/art-3.jpg" alt="Artwork 3"></li>
-                        <li><img src="image/art-4.jpg" alt="Artwork 4"></li>
-                        <li><img src="image/art-5.jpg" alt="Artwork 5"></li>
-                        <li><img src="image/art-1.jpg" alt="Artwork 1"></li><!-- ダミー -->
-                        <li><img src="image/art-2.jpg" alt="Artwork 2"></li><!-- ダミー -->
-                        <li><img src="image/art-3.jpg" alt="Artwork 3"></li><!-- ダミー -->
-                    </ul>
+            <!-- レイヤー8: ギャラリー（ランダム配置） -->
+            <div id="layer-8" class="layer" style="opacity:1; transform: translateZ(-3500px); transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);">
+                <div class="random-gallery">
+                    <img src="image/art-1.jpg" alt="Artwork 1" />
+                    <img src="image/art-2.jpg" alt="Artwork 2" />
+                    <img src="image/art-3.jpg" alt="Artwork 3" />
+                    <img src="image/art-4.jpg" alt="Artwork 4" />
+                    <img src="image/art-5.jpg" alt="Artwork 5" />
                 </div>
-                <!-- 画面左右端のナビゲーションボタン -->
-                <button id="carousel-prev" class="control-edge left" aria-label="Prev">
-                        <svg class="chevrons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="grad-silver-controls" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#ffffff"/>
-                                    <stop offset="25%" stop-color="#e2e8f0"/>
-                                    <stop offset="50%" stop-color="#94a3b8"/>
-                                    <stop offset="75%" stop-color="#e2e8f0"/>
-                                    <stop offset="100%" stop-color="#ffffff"/>
-                                </linearGradient>
-                            </defs>
-                            <g fill="none" stroke="url(#grad-silver-controls)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M15 6 L9 12 L15 18"/>
-                                <path d="M19 6 L13 12 L19 18"/>
-                            </g>
-                        </svg>
-                </button>
-                <button id="carousel-next" class="control-edge right" aria-label="Next">
-                        <svg class="chevrons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="grad-silver-controls-r" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#ffffff"/>
-                                    <stop offset="25%" stop-color="#e2e8f0"/>
-                                    <stop offset="50%" stop-color="#94a3b8"/>
-                                    <stop offset="75%" stop-color="#e2e8f0"/>
-                                    <stop offset="100%" stop-color="#ffffff"/>
-                                </linearGradient>
-                            </defs>
-                            <g fill="none" stroke="url(#grad-silver-controls-r)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9 6 L15 12 L9 18"/>
-                                <path d="M5 6 L11 12 L5 18"/>
-                            </g>
-                        </svg>
-                </button>
-            
             </div>
             <!-- レイヤー9: LINK セクション -->
             <div id="layer-9" class="layer" style="opacity:0;">
@@ -672,7 +656,57 @@
                 updateSlidePosition(true);
             };
             
-            initGallery();
+            // ランダムギャラリー初期化（レイヤー8）
+            const initRandomGallery = () => {
+                const container = document.querySelector('#layer-8 .random-gallery');
+                if (!container) return;
+                const imgs = Array.from(container.querySelectorAll('img'));
+
+                const placeRandom = () => {
+                    const cw = container.clientWidth;
+                    const ch = container.clientHeight;
+                    const padding = 16; // 枠からの余白
+                    imgs.forEach((img) => {
+                        const iw = img.naturalWidth ? Math.min(img.clientWidth || img.naturalWidth, cw - padding*2) : (img.clientWidth || 360);
+                        const ih = img.naturalHeight ? Math.min(img.clientHeight || img.naturalHeight, ch - padding*2) : (img.clientHeight || 240);
+                        const maxX = Math.max(0, cw - iw - padding);
+                        const maxY = Math.max(0, ch - ih - padding);
+                        const x = Math.round(padding + Math.random() * maxX);
+                        const y = Math.round(padding + Math.random() * maxY);
+                        const rot = (Math.random() * 6 - 3).toFixed(2); // -3〜3度
+                        img.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+                        img.style.opacity = '1';
+                    });
+                };
+
+                // 画像読み込み待ち
+                let pending = imgs.length;
+                imgs.forEach((img) => {
+                    if (img.complete) {
+                        pending -= 1;
+                    } else {
+                        img.addEventListener('load', () => {
+                            pending -= 1;
+                            if (pending === 0) placeRandom();
+                        });
+                        img.addEventListener('error', () => {
+                            pending -= 1;
+                            if (pending === 0) placeRandom();
+                        });
+                    }
+                });
+                if (pending === 0) placeRandom();
+
+                // リサイズで再配置（デバウンス）
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(placeRandom, 120);
+                });
+            };
+
+            // 旧カルーセルは存在しないため安全にスキップされる
+            initRandomGallery();
             
             // --- サウンド設定 ---
             let ambientSynth, noise, wind;

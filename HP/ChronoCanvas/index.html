@@ -405,27 +405,26 @@
         }
         .gallery-hint:hover { opacity: 0.75; }
 
-        /* ギャラリータイトル（下部中央、控えめな表示） */
+        /* ギャラリータイトル（ギャラリー下に表示、控えめ） */
         .gallery-title {
-            position: absolute;
-            left: 50%;
-            bottom: 14px;
-            transform: translateX(-50%);
+            position: static;
+            margin-top: 6px;
             font-size: 1.05rem;
             letter-spacing: 0.08em;
-            opacity: 0.85;
+            opacity: 0.9;
             padding: 6px 12px;
             border-radius: 8px;
             background: rgba(0, 0, 0, 0.35);
             backdrop-filter: blur(2px);
             color: #e5e7eb;
-            z-index: 1200;
             pointer-events: none;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
 
         /* レイヤー8（ギャラリー）は初期は非表示・非アクティブ */
         #layer-8 { pointer-events: none; }
+        /* ギャラリーとタイトルを縦並びで中央配置 */
+        #layer-8 { flex-direction: column; gap: 10px; }
         
         @media screen and (max-width: 768px) {
             .image-carousel li img { height: 250px; }
@@ -492,7 +491,7 @@
                     <img src="image/art-3.jpg" alt="Artwork 3" />
                     <img src="image/art-4.jpg" alt="Artwork 4" />
                     <img src="image/art-5.jpg" alt="Artwork 5" />
-                    <div class="gallery-hint">Rキーで順番に前面へ</div>
+                    <div class="gallery-hint">← → キーで順番に前面へ</div>
                     <div class="gallery-title">静穏の花庭</div>
                 </div>
             </div>
@@ -825,9 +824,13 @@
                     placeRandom(); // タイトル更新はplaceRandom内で実施
                 });
                 document.addEventListener('keydown', (e) => {
-                    if (e.key.toLowerCase() === 'r') {
-                        // 先に次の対象へ進め、そのあとランダム再配置＋前面化
+                    if (e.key === 'ArrowRight') {
+                        // 次へ進めてからランダム再配置＋前面化
                         cycleIndex = (cycleIndex + 1) % ordered.length;
+                        placeRandom();
+                    } else if (e.key === 'ArrowLeft') {
+                        // 前へ戻してからランダム再配置＋前面化
+                        cycleIndex = (cycleIndex - 1 + ordered.length) % ordered.length;
                         placeRandom();
                     }
                 });

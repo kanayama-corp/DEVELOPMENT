@@ -270,7 +270,9 @@
             background: #111827;
             border-radius: 12px;
             padding: 12px 0;
-            transform: translateX(280px);
+            margin-left: auto;
+            margin-right: auto;
+            transform: translateX(180px);
         }
         .image-carousel {
             display: flex;
@@ -313,7 +315,7 @@
         @media screen and (min-width: 768px) {
             .image-carousel li img { 
                 height: 400px;
-                width: 600px;
+                width: 800px;
                 object-fit: cover;
             }
         }
@@ -337,8 +339,8 @@
             padding: 8px; /* クリックしやすさだけ確保（視覚的には透明） */
         }
         /* 画面中央に寄せて、左右に程よい間隔で配置 */
-        .control-edge.left { left: calc(50% - 170px); }
-        .control-edge.right { left: calc(50% + 140px); }
+        .control-edge.left { left: calc(50% - 180px); }
+        .control-edge.right { left: calc(50% + 130px); }
         .control-edge:hover { transform: translateY(-50%) scale(1.05); }
         .chevrons { width: 56px; height: 56px; }
 

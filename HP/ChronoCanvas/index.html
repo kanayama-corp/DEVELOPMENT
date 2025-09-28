@@ -789,9 +789,9 @@
                 });
                 document.addEventListener('keydown', (e) => {
                     if (e.key.toLowerCase() === 'r') {
-                        // 毎回ランダムに配置を変えつつ、トップは順番に切替
-                        placeRandom();
+                        // 先に次の対象へ進め、そのあとランダム再配置＋前面化
                         cycleIndex = (cycleIndex + 1) % ordered.length;
+                        placeRandom();
                     }
                 });
             };

@@ -388,9 +388,8 @@
             .random-gallery img { width: 420px; height: 280px; }
         }
 
-        /* レイヤー8（ギャラリー）はクリック操作を有効化 */
-        #layer-8 { pointer-events: auto; }
-        #layer-8 * { pointer-events: auto; }
+        /* レイヤー8（ギャラリー）は初期は非表示・非アクティブ */
+        #layer-8 { pointer-events: none; }
         
         @media screen and (max-width: 768px) {
             .image-carousel li img { height: 250px; }
@@ -450,7 +449,7 @@
                 </div>
             </div>
             <!-- レイヤー8: ギャラリー（ランダム配置） -->
-            <div id="layer-8" class="layer" style="opacity:1; transform: translateZ(-3500px); transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);">
+            <div id="layer-8" class="layer" style="opacity:0; transform: translateZ(-3500px); transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);">
                 <div class="random-gallery">
                     <img src="image/art-1.jpg" alt="Artwork 1" />
                     <img src="image/art-2.jpg" alt="Artwork 2" />
@@ -665,17 +664,61 @@
                 const placeRandom = () => {
                     const cw = container.clientWidth;
                     const ch = container.clientHeight;
-                    const padding = 16; // 枠からの余白
-                    imgs.forEach((img) => {
-                        const iw = img.naturalWidth ? Math.min(img.clientWidth || img.naturalWidth, cw - padding*2) : (img.clientWidth || 360);
-                        const ih = img.naturalHeight ? Math.min(img.clientHeight || img.naturalHeight, ch - padding*2) : (img.clientHeight || 240);
-                        const maxX = Math.max(0, cw - iw - padding);
-                        const maxY = Math.max(0, ch - ih - padding);
-                        const x = Math.round(padding + Math.random() * maxX);
-                        const y = Math.round(padding + Math.random() * maxY);
-                        const rot = (Math.random() * 6 - 3).toFixed(2); // -3〜3度
-                        img.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+                    const padding = 36; // 枠からの余白をさらに増やす
+
+                    // 擬似グリッドで分散
+                    const cols = 5, rows = 2; // セル数をさらに増やして分散を強化
+                    const cellW = cw / cols;
+                    const cellH = ch / rows;
+                    // セルのインデックスをシャッフル
+                    const cells = Array.from({length: cols * rows}, (_, i) => i).sort(() => Math.random() - 0.5);
+
+                    // 既に配置した矩形で簡易的に重なりを避ける
+                    const placed = [];
+
+                    imgs.forEach((img, idx) => {
+                        const cellIndex = cells[idx % cells.length];
+                        const cx = cellIndex % cols;
+                        const cy = Math.floor(cellIndex / cols);
+                        const cellX = cx * cellW;
+                        const cellY = cy * cellH;
+
+                        const iw = img.clientWidth || 360;
+                        const ih = img.clientHeight || 240;
+
+                        // セル内での配置範囲（枠とセルの内側に収まるように）
+                        const minX = Math.max(padding, cellX + padding);
+                        const maxX = Math.min(cw - iw - padding, cellX + cellW - iw - padding);
+                        const minY = Math.max(padding, cellY + padding);
+                        const maxY = Math.min(ch - ih - padding, cellY + cellH - ih - padding);
+
+                        // セルに収まらない場合は全体範囲でフォールバック
+                        const safeX = (isFinite(maxX) && maxX >= minX) ? Math.round(minX + Math.random() * (maxX - minX))
+                                                                      : Math.round(padding + Math.random() * Math.max(0, cw - iw - padding*2));
+                        const safeY = (isFinite(maxY) && maxY >= minY) ? Math.round(minY + Math.random() * (maxY - minY))
+                                                                      : Math.round(padding + Math.random() * Math.max(0, ch - ih - padding*2));
+
+                        let rot = (Math.random() * 30 - 15).toFixed(2); // -15〜15度
+                        let scale = (0.82 + Math.random() * 0.20).toFixed(2); // 0.82〜1.02倍（少し小さめも許容）
+
+                        // 矩形重なりの簡易回避（数回リトライ）
+                        let xPos = safeX, yPos = safeY;
+                        const w = iw * parseFloat(scale);
+                        const h = ih * parseFloat(scale);
+                        const sep = 12; // 画像同士の間隔を少し確保
+                        const overlap = (a,b) => !((a.x+a.w+sep) < b.x || (b.x+b.w+sep) < a.x || (a.y+a.h+sep) < b.y || (b.y+b.h+sep) < a.y);
+                        let attempts = 20;
+                        while (attempts-- > 0 && placed.some(r => overlap(r, {x:xPos, y:yPos, w, h}))) {
+                            // 近傍を少しずらす
+                            xPos = Math.min(Math.max(padding, xPos + (Math.random()*80 - 40)), cw - w - padding);
+                            yPos = Math.min(Math.max(padding, yPos + (Math.random()*56 - 28)), ch - h - padding);
+                        }
+
+                        img.style.transform = `translate(${Math.round(xPos)}px, ${Math.round(yPos)}px) rotate(${rot}deg) scale(${scale})`;
                         img.style.opacity = '1';
+                        img.style.zIndex = String(10 + Math.floor(Math.random()*30));
+
+                        placed.push({x:xPos, y:yPos, w, h});
                     });
                 };
 
@@ -702,6 +745,16 @@
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(placeRandom, 120);
+                });
+
+                // クリックで並び替え、'r'キーでも並び替え
+                container.addEventListener('click', () => {
+                    placeRandom();
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key.toLowerCase() === 'r') {
+                        placeRandom();
+                    }
                 });
             };
 

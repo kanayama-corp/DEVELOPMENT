@@ -390,11 +390,12 @@
 
         /* ギャラリーヒント（Rキーでシャッフル） */
         .gallery-hint {
-            position: absolute;
-            right: 16px;
-            bottom: 12px;
+            position: static; /* ギャラリー外で表示 */
+            align-self: center; /* 中央寄せ */
+            margin-top: 40px; /* タイトルの40px下 */
+            margin-right: 0;
             font-size: 0.9rem;
-            opacity: 0.55;
+            opacity: 0.6;
             letter-spacing: 0.08em;
             user-select: none;
             pointer-events: none;
@@ -491,9 +492,9 @@
                     <img src="image/art-3.jpg" alt="Artwork 3" />
                     <img src="image/art-4.jpg" alt="Artwork 4" />
                     <img src="image/art-5.jpg" alt="Artwork 5" />
-                    <div class="gallery-hint">← → キーで順番に前面へ</div>
                 </div>
                 <div class="gallery-title">静穏の花庭</div>
+                <div class="gallery-hint">次の作品へ（← →）</div>
             </div>
             <!-- レイヤー9: LINK セクション -->
             <div id="layer-9" class="layer" style="opacity:0;">

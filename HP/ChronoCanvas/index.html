@@ -9,6 +9,9 @@
     <!-- Flickity carousel -->
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <!-- Particle effect dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* カスタムスタイル */
@@ -72,6 +75,21 @@
             justify-content: center !important;
             align-items: center !important;
         }
+        /* GALLERYセクション用パーティクルキャンバス */
+        #layer-6 {
+            position: relative;
+        }
+        #projector {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* 操作を邪魔しない */
+            opacity: 0.85;
+        }
+        /* GALLERY文字を前面に */
+        #hello-text { position: relative; z-index: 2; }
 
         /* レイヤー7: メッセージセクション（順序入れ替え後はWelcomeの手前に配置） */
         #layer-7 {
@@ -514,6 +532,7 @@
                 </div>
             </div>
             <div id="layer-6" class="layer">
+                <canvas id="projector"></canvas>
                 <h2 id="hello-text" class="text-4xl md:text-6xl text-white font-serif gradient-silver">GALLERY</h2>
             </div>
             <div id="layer-5" class="layer">
@@ -718,18 +737,143 @@
             document.body.addEventListener('click', setupSound, { once: true });
 
             // --- パーティクル生成 ---
-            const createParticles = () => {
-                for (let i = 0; i < 100; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    const x = (Math.random() - 0.5) * 2500;
-                    const y = (Math.random() - 0.5) * 2500;
-                    const z = (Math.random() - 0.5) * 2000 - 500;
-                    particle.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-                    particleContainer.appendChild(particle);
+            // GALLERYセクション用 CreateJS + GSAP パーティクル
+            (function(){
+                if (typeof createjs === 'undefined' || typeof TweenMax === 'undefined') return;
+                const canvas = document.getElementById('projector');
+                if (!canvas) return;
+
+                function range(min, max){ return min + (max - min) * Math.random(); }
+                function round(num, precision){ const dec = Math.pow(10, precision); return Math.round(dec * num) / dec; }
+                function weightedRange(to, from=0, decimalPlaces=0, weightedRange=0, weightStrength=0){
+                    if(to === from) return to;
+                    let ret;
+                    if(weightedRange && Math.random()<=weightStrength){
+                        ret = round(Math.random()*(weightedRange[1]-weightedRange[0]) + weightedRange[0], decimalPlaces);
+                    } else {
+                        ret = round(Math.random()*(to-from)+from, decimalPlaces);
+                    }
+                    return ret;
                 }
-            };
-            createParticles();
+
+                function ParticleEngine(canvas_id){
+                    if(!(this instanceof ParticleEngine)) return new ParticleEngine(canvas_id);
+                    const pe = this;
+                    pe.canvas_id = canvas_id;
+                    pe.stage = new createjs.Stage(canvas_id);
+                    pe.totalWidth = pe.canvasWidth = document.getElementById(canvas_id).width = document.getElementById(canvas_id).offsetWidth;
+                    pe.totalHeight = pe.canvasHeight = document.getElementById(canvas_id).height = document.getElementById(canvas_id).offsetHeight;
+                    pe.compositeStyle = 'lighter';
+                    pe.particleSettings = [
+                        {id:'small',  num:220, fromX:0, toX:pe.totalWidth, ballwidth:3,  alphamax:0.4, areaHeight:.5, color:'#0cdbf3', fill:false},
+                        {id:'medium', num:90,  fromX:0, toX:pe.totalWidth, ballwidth:8,  alphamax:0.3, areaHeight:1,   color:'#6fd2f3', fill:true},
+                        {id:'large',  num:8,   fromX:0, toX:pe.totalWidth, ballwidth:26, alphamax:0.2, areaHeight:1,   color:'#93e9f3', fill:true}
+                    ];
+                    pe.particleArray = [];
+                    pe.lights = [
+                        {ellipseWidth:380, ellipseHeight:120, alpha:0.6, offsetX:0,   offsetY:0,   color:'#6ac6e8'},
+                        {ellipseWidth:320, ellipseHeight:220, alpha:0.3, offsetX:-60, offsetY:0,   color:'#54d5e8'},
+                        {ellipseWidth:120, ellipseHeight:90,  alpha:0.2, offsetX:90,  offsetY:-50, color:'#2ae8d8'}
+                    ];
+
+                    pe.stage.compositeOperation = pe.compositeStyle;
+
+                    function drawBgLight(){
+                        let light, bounds, blurFilter;
+                        for(let i=0;i<pe.lights.length;i++){
+                            light = new createjs.Shape();
+                            light.graphics.beginFill(pe.lights[i].color).drawEllipse(0,0,pe.lights[i].ellipseWidth, pe.lights[i].ellipseHeight);
+                            light.regX = pe.lights[i].ellipseWidth/2;
+                            light.regY = pe.lights[i].ellipseHeight/2;
+                            light.y = light.initY = pe.totalHeight/2 + pe.lights[i].offsetY;
+                            light.x = light.initX = pe.totalWidth/2 + pe.lights[i].offsetX;
+                            blurFilter = new createjs.BlurFilter(pe.lights[i].ellipseWidth, pe.lights[i].ellipseHeight, 1);
+                            bounds = blurFilter.getBounds();
+                            light.filters = [blurFilter];
+                            light.cache(bounds.x-pe.lights[i].ellipseWidth/2, bounds.y-pe.lights[i].ellipseHeight/2, bounds.width*2, bounds.height*2);
+                            light.alpha = pe.lights[i].alpha;
+                            light.compositeOperation = 'screen';
+                            pe.stage.addChildAt(light, 0);
+                            pe.lights[i].elem = light;
+                        }
+                        TweenMax.fromTo(pe.lights[0].elem, 10, {scaleX:1.5, x:pe.lights[0].elem.initX, y:pe.lights[0].elem.initY},{yoyo:true, repeat:-1, ease:Power1.easeInOut, scaleX:2, scaleY:0.7});
+                        TweenMax.fromTo(pe.lights[1].elem, 12, { x:pe.lights[1].elem.initX, y:pe.lights[1].elem.initY},{delay:5, yoyo:true, repeat:-1, ease:Power1.easeInOut, scaleY:2, scaleX:2, y:pe.totalHeight/2-50, x:pe.totalWidth/2+100});
+                        TweenMax.fromTo(pe.lights[2].elem, 8,  { x:pe.lights[2].elem.initX, y:pe.lights[2].elem.initY},{delay:2, yoyo:true, repeat:-1, ease:Power1.easeInOut, scaleY:1.5, scaleX:1.5, y:pe.totalHeight/2, x:pe.totalWidth/2-200});
+                    }
+
+                    function drawParticles(){
+                        let blurFilter;
+                        for(let i=0;i<pe.particleSettings.length;i++){
+                            const ball = pe.particleSettings[i];
+                            for(let s=0;s<ball.num;s++){
+                                const circle = new createjs.Shape();
+                                if(ball.fill){
+                                    circle.graphics.beginFill(ball.color).drawCircle(0,0,ball.ballwidth);
+                                    blurFilter = new createjs.BlurFilter(ball.ballwidth/2, ball.ballwidth/2, 1);
+                                    circle.filters=[blurFilter];
+                                    const b=blurFilter.getBounds();
+                                    circle.cache(-50+b.x, -50+b.y, 100+b.width, 100+b.height);
+                                } else {
+                                    circle.graphics.beginStroke(ball.color).setStrokeStyle(1).drawCircle(0,0,ball.ballwidth);
+                                }
+                                circle.alpha = range(0,0.1);
+                                circle.alphaMax = ball.alphamax;
+                                circle.distance = ball.ballwidth * 2;
+                                circle.ballwidth = ball.ballwidth;
+                                circle.flag = ball.id;
+                                applySettings(circle, ball.fromX, ball.toX, ball.areaHeight);
+                                circle.speed = range(2,10);
+                                circle.y = circle.initY;
+                                circle.x = circle.initX;
+                                circle.scaleX = circle.scaleY = range(0.3,1);
+                                pe.stage.addChild(circle);
+                                animateBall(circle);
+                                pe.particleArray.push(circle);
+                            }
+                        }
+                    }
+
+                    function applySettings(circle, positionX, totalWidth, areaHeight){
+                        circle.speed = range(1,3);
+                        circle.initY = weightedRange(0, pe.totalHeight , 1, [pe.totalHeight * (2-areaHeight/2)/4, pe.totalHeight*(2+areaHeight/2)/4], 0.8 );
+                        circle.initX = weightedRange(positionX, totalWidth, 1, [positionX+ ((totalWidth-positionX))/4, positionX+ ((totalWidth-positionX)) * 3/4], 0.6);
+                        circle.areaHeight = areaHeight;
+                    }
+
+                    function animateBall(ball){
+                        const scale = range(0.3,1);
+                        const xpos = range(ball.initX - ball.distance, ball.initX + ball.distance);
+                        const ypos = range(ball.initY - ball.distance, ball.initY + ball.distance);
+                        const speed = ball.speed;
+                        TweenMax.to(ball, speed, {scaleX:scale, scaleY:scale, x:xpos, y:ypos, onComplete:animateBall, onCompleteParams:[ball], ease:Cubic.easeInOut});
+                        TweenMax.to(ball, speed/2, {alpha:range(0.1, ball.alphaMax), onComplete:fadeout, onCompleteParams:[ball, speed]});
+                    }
+                    function fadeout(ball, speed){ ball.speed = range(2,10); TweenMax.to(ball, speed/2, {alpha:0}); }
+
+                    pe.render = function(){ pe.stage.update(); };
+                    pe.resize = function(){
+                        pe.totalWidth = pe.canvasWidth = document.getElementById(canvas_id).width = document.getElementById(canvas_id).offsetWidth;
+                        pe.totalHeight = pe.canvasHeight = document.getElementById(canvas_id).height = document.getElementById(canvas_id).offsetHeight;
+                        pe.render();
+                        for(let i=0;i<pe.particleArray.length;i++){
+                            applySettings(pe.particleArray[i], 0, pe.totalWidth, pe.particleArray[i].areaHeight);
+                        }
+                        for (let j=0;j<pe.lights.length;j++){
+                            pe.lights[j].elem.initY = pe.totalHeight/2 + pe.lights[j].offsetY;
+                            pe.lights[j].elem.initX = pe.totalWidth/2  + pe.lights[j].offsetX;
+                            TweenMax.to(pe.lights[j].elem, .5, {x:pe.lights[j].elem.initX, y:pe.lights[j].elem.initY});
+                        }
+                    };
+
+                    drawBgLight();
+                    drawParticles();
+                }
+
+                // 初期化とループ
+                let particles = new ParticleEngine('projector');
+                createjs.Ticker.addEventListener('tick', () => particles.render());
+                window.addEventListener('resize', () => particles.resize(), false);
+            })();
 
             // ギャラリー機能を削除
 

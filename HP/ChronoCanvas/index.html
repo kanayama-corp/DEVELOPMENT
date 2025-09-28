@@ -270,6 +270,7 @@
             background: #111827;
             border-radius: 12px;
             padding: 12px 0;
+            transform: translateX(280px);
         }
         .image-carousel {
             display: flex;
@@ -307,9 +308,14 @@
             display: block;
             height: 200px;
             width: auto;
+            object-fit: cover;
         }
         @media screen and (min-width: 768px) {
-            .image-carousel li img { height: 400px; }
+            .image-carousel li img { 
+                height: 400px;
+                width: 600px;
+                object-fit: cover;
+            }
         }
         /* カスタム操作ボタン（ダブルシェブロン） */
         /* 画面左右端に固定するナビゲーション（上下中央） */
@@ -598,7 +604,7 @@
                         setTimeout(() => {
                             slideIndex = 1;
                             updateSlidePosition(true);
-                        }, 800);
+                        }, 750);
                     } else {
                         slideIndex++;
                         updateSlidePosition();
@@ -610,10 +616,10 @@
                     if (slideIndex === 1) {
                         slideIndex = 0;
                         updateSlidePosition(true);
-                        setTimeout(() => {
+                        requestAnimationFrame(() => {
                             slideIndex = imgNum;
                             updateSlidePosition();
-                        }, 50);
+                        });
                     } else {
                         slideIndex--;
                         updateSlidePosition();

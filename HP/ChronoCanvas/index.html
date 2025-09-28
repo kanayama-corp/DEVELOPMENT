@@ -408,7 +408,7 @@
         /* ギャラリータイトル（ギャラリー下に表示、控えめ） */
         .gallery-title {
             position: static;
-            margin-top: 6px;
+            margin-top: 6px; /* ギャラリーの直下に自然に表示 */
             font-size: 1.05rem;
             letter-spacing: 0.08em;
             opacity: 0.9;
@@ -492,8 +492,8 @@
                     <img src="image/art-4.jpg" alt="Artwork 4" />
                     <img src="image/art-5.jpg" alt="Artwork 5" />
                     <div class="gallery-hint">← → キーで順番に前面へ</div>
-                    <div class="gallery-title">静穏の花庭</div>
                 </div>
+                <div class="gallery-title">静穏の花庭</div>
             </div>
             <!-- レイヤー9: LINK セクション -->
             <div id="layer-9" class="layer" style="opacity:0;">
@@ -702,7 +702,7 @@
                 let cycleIndex = 0; // Rキーで前面に出す対象のインデックス
 
                 // タイトル要素と各画像タイトル
-                const titleEl = container.querySelector('.gallery-title');
+                const titleEl = document.querySelector('#layer-8 .gallery-title');
                 const titles = {
                     'image/art-1.jpg': '薄暁の庭詩',
                     'image/art-2.jpg': '薄翠の余韻',

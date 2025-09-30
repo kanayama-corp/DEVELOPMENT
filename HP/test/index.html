@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大阪、そぞろ歩き</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet.js for Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- テーマ用CSS変数 --- */
+        :root {
+            /* Day Theme (Default) */
+            --bg-color: #F8F7F4;
+            --text-color: #333333;
+            --header-color: #333333;
+            --accent-color-1: #264065; /* Indigo */
+            --accent-color-2: #D9544D; /* Vermilion */
+            --accent-color-3: #C5A05A; /* Gold */
+            --border-color: rgba(51, 51, 51, 0.1);
+            --image-filter: none;
+            --map-filter: none;
+            --button-bg: #FFFFFF;
+        }
+
+
+        body[data-theme="night"] {
+            --bg-color: #1A202C; /* 非常に暗い青/チャコール */
+            --text-color: #A0AEC0; /* 明るい灰色 */
+            --header-color: #E2E8F0; /* ヘッダー用のさらに明るい灰色 */
+            --accent-color-1: #C5A05A; /* 金色 */
+            --accent-color-2: #C5A05A;
+            --accent-color-3: #C5A05A;
+            --border-color: rgba(226, 232, 240, 0.1);
+            --image-filter: brightness(0.8) saturate(1.2);
+            --map-filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(0.9);
+            --button-bg: #2D3748;
+        }
+
+        /* カスタムカラーをTailwindで使えるように設定 */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-charcoal': 'var(--text-color)',
+                        'brand-indigo': 'var(--accent-color-1)',
+                        'brand-gold': 'var(--accent-color-3)',
+                        'brand-vermilion': 'var(--accent-color-2)',
+                        'brand-offwhite': 'var(--bg-color)',
+                    }
+                }
+            }
+        }
+        
+        /* 基本的なスタイル設定 */
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        /* ヘッダーのテキストカラーを適用 */
+        header h1 { color: var(--header-color); transition: color 0.5s; }
+        header { border-color: var(--border-color); transition: border-color 0.5s; }
+
+        /* 画像とマップのフィルタ */
+        .theme-image { filter: var(--image-filter); transition: filter 0.5s ease-in-out; }
+        #map { filter: var(--map-filter); transition: filter 0.5s ease-in-out; }
+
+        /* コンテンツのフェードインアニメーション */
+        .content-panel { display: none; opacity: 0; transition: opacity 0.5s ease-in-out; }
+        .content-panel.active { display: block; opacity: 1; }
+
+        /* アクティブなタブのスタイル */
+        .nav-tab.active {
+            border-color: var(--accent-color-1);
+            color: var(--accent-color-1);
+            font-weight: 600;
+        }
+
+        /* マップアイコンのハイライト（点滅）アニメーション */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1.2); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+        }
+        .leaflet-marker-icon.highlighted { animation: pulse 1.5s infinite; }
+
+        /* テーマ切替ボタン */
+        #theme-switcher {
+            position: absolute;
+            display: flex;
+            padding: 4px;
+            border-radius: 9999px; /* pill shape */
+            background-color: rgba(0,0,0,0.2);
+            backdrop-filter: blur(4px);
+            z-index: 10;
+        }
+        #theme-indicator {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--accent-color-1);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.5s;
+            z-index: 0;
+        }
+
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: transparent;
+            color: white; /* Icon color */
+            z-index: 1;
+            position: relative;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+        }
+
+        .theme-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            transition: color 0.3s;
+            opacity: 0.8;
+        }
+        
+        .theme-btn:hover svg {
+            opacity: 1;
+        }
+
+        .theme-btn.active {
+            color: var(--bg-color); /* Change icon color to contrast with indicator */
+        }
+        .theme-btn.active svg {
+             opacity: 1;
+        }
+        
+        body[data-theme="night"] .theme-btn.active {
+            color: #1A202C;
+        }
+
+        /* 地図ボタンのテーマ別スタイル */
+        body[data-theme="day"] .map-link-btn {
+            background-color: transparent;
+            color: var(--accent-color-1); /* 青系（インディゴ） */
+            border: 1.5px solid var(--accent-color-1);
+        }
+        body[data-theme="day"] .map-link-btn:hover {
+            background-color: var(--accent-color-1);
+            color: var(--bg-color);
+        }
+
+        body[data-theme="night"] .map-link-btn {
+            background-color: var(--accent-color-1); /* 夜はゴールド系をベースに */
+            color: var(--bg-color);
+            border: 1.5px solid var(--accent-color-1);
+        }
+        body[data-theme="night"] .map-link-btn:hover {
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="bg-brand-offwhite">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl relative">
+        <!-- 共通ヘッダー -->
+        <header class="text-center py-8 border-b-2 border-brand-charcoal/10 mb-8">
+            <h1 class="text-4xl md:text-5xl font-semibold text-brand-charcoal tracking-widest">大阪、そぞろ歩き</h1>
+            <p class="mt-4 text-md md:text-lg text-brand-charcoal/80">いつもの大阪の、ひとつ奥へ。あなたの物語が始まる、旅の入り口がここにあります。</p>
+        </header>
+        
+        <!-- テーマ切替ボタン -->
+        <div id="theme-switcher" class="absolute top-4 right-4 md:top-8 md:right-8">
+             <div id="theme-indicator"></div>
+            <button data-theme="day" class="theme-btn" title="昼">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.64 5.64c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L5.64 5.64zm12.73 12.73c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.06-1.06zm1.06-12.73c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41s1.02.39 1.41 0l1.06-1.06zm-12.73 12.73c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41s1.02.39 1.41 0l1.06-1.06z"/></svg>
+            </button>
+            <button data-theme="night" class="theme-btn" title="夜">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.3 4.9c-.3-.2-.7-.1-1 .2-.3.3-.4.7-.2 1.1.9 1.5 1.4 3.2 1.4 5.1 0 1.8-.5 3.5-1.3 5c-.2.3-.1.7.2 1 .2.2.5.3.7.3.1 0 .3 0 .4-.1 2.2-1.9 3.5-4.7 3.5-7.8.1-3.2-1.2-6-3.4-7.9-.1-.1-.3-.1-.3-.1z"/></svg>
+            </button>
+        </div>
+
+        <!-- ナビゲーション・タブ -->
+        <nav class="flex justify-center flex-wrap gap-4 md:gap-8 mb-12">
+            <button data-tab="bay" class="nav-tab text-lg p-2 border-b-2 border-transparent transition-colors duration-300 hover:text-brand-indigo">ベイエリア</button>
+            <button data-tab="castle" class="nav-tab text-lg p-2 border-b-2 border-transparent transition-colors duration-300 hover:text-brand-indigo">大阪城周辺</button>
+            <button data-tab="course" class="nav-tab text-lg p-2 border-b-2 border-transparent transition-colors duration-300 hover:text-brand-indigo">モデルコース</button>
+            <button data-tab="map" class="nav-tab text-lg p-2 border-b-2 border-transparent transition-colors duration-300 hover:text-brand-indigo">マップ</button>
+        </nav>
+
+        <!-- コンテンツ表示エリア -->
+        <main id="content-area">
+            <!-- ベイエリア -->
+            <div id="bay-content" class="content-panel"></div>
+            <!-- 大阪城周辺 -->
+            <div id="castle-content" class="content-panel"></div>
+            <!-- モデルコース -->
+            <div id="course-content" class="content-panel"></div>
+            <!-- マップ -->
+            <div id="map-content" class="content-panel">
+                <div id="map" class="w-full h-[60vh] md:h-[70vh] rounded-lg shadow-lg"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- データ定義 ---
+            const spots = {
+                'kaiyukan': {
+                    id: 'kaiyukan',
+                    name: '海遊館',
+                    area: 'bay',
+                    color: '#C5A05A', // Gold
+                    lat: 34.6554,
+                    lng: 135.4293,
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Whale_Shark_at_Osaka_Aquarium.jpg',
+                    description: '世界最大級の水族館で、雄大なジンベエザメが泳ぐ巨大な水槽は圧巻。環太平洋の自然を再現した展示を巡りながら、生命の神秘に触れる感動的な体験が待っています。'
+                },
+                'tempozan-ferris': {
+                    id: 'tempozan-ferris',
+                    name: '天保山大観覧車',
+                    area: 'bay',
+                    color: '#C5A05A',
+                    lat: 34.6568,
+                    lng: 135.4308,
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/d/dc/Tempozan_Ferris_Wheel_in_Osaka_at_Dusk.jpg',
+                    description: 'ベイエリアの景色を空から楽しむ、約15分の空中散歩。晴れた日には遠く明石海峡大橋まで見渡せます。夜にはライトアップされ、ロマンチックな雰囲気に包まれます。'
+                },
+                'osaka-castle': {
+                    id: 'osaka-castle',
+                    name: '大阪城天守閣',
+                    area: 'castle',
+                    color: '#556B2F', // DarkOliveGreen
+                    lat: 34.6873,
+                    lng: 135.5262,
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Osaka_Castle_02bs3200.jpg',
+                    description: '大阪の歴史と文化のシンボル。黄金の茶室や壮大な城の歴史に思いを馳せながら、最上階からの眺めを楽しんでください。広大な城内公園は、四季折々の自然が美しい憩いの場です。'
+                },
+                 'nishinomaru': {
+                    id: 'nishinomaru',
+                    name: '西の丸庭園',
+                    area: 'castle',
+                    color: '#556B2F',
+                    lat: 34.6852,
+                    lng: 135.5250,
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Osaka_Castle_Nishinomaru_Garden_April_2005.JPG',
+                    description: '大阪城天守閣を背景に広がる、約6.5ヘクタールの広大な芝生庭園。特に春の桜は見事で、多くの人々を魅了します。歴史的な建造物と自然の調和が美しい、心安らぐ場所です。'
+                },
+            };
+
+            const modelCourses = {
+                'course1': {
+                    title: '水都の歴史を辿る、静かな半日',
+                    description: '中之島周辺の美術館や歴史的建造物を巡り、大阪が「水の都」と呼ばれる所以を肌で感じるコースです。川沿いのカフェで一息つきながら、知的な時間をお過ごしください。',
+                    timeline: [
+                        { time: '13:00', spot: '中之島香雪美術館', details: '東洋古美術の静かな美に触れる。' },
+                        { time: '14:30', spot: '大阪市中央公会堂', details: '赤レンガが美しいネオルネッサンス様式の建築を見学。' },
+                        { time: '15:30', spot: '北浜レトロ', details: '川沿いの洋館カフェで、優雅なティータイム。' },
+                        { time: '17:00', spot: '淀屋橋', details: '夕暮れの美しい橋の上から、水都の景色を眺める。' },
+                    ]
+                },
+                'course2': {
+                    title: '職人とアートの息遣いを感じる一日',
+                    description: '古い町並みが残るエリアで、伝統を受け継ぐ工房や個性的なギャラリー、リノベーションカフェを巡ります。作り手の情熱や新しい感性に触れる、心豊かな一日を。',
+                    timeline: [
+                        { time: '11:00', spot: '空堀商店街', details: '昔ながらの商店街を散策。隠れ家的なお店を探す楽しみも。' },
+                        { time: '12:30', spot: '練（れん）', details: '長屋を再生した複合ショップで、個性的な雑貨やアートに触れる。' },
+                        { time: '14:00', spot: '工房見学', details: '伝統工芸品の職人技を間近で見学。（要予約）' },
+                        { time: '16:00', spot: 'ギャラリー巡り', details: '中崎町の個性的なギャラリーで、若手アーティストの作品に出会う。' },
+                    ]
+                }
+            };
+
+            // --- HTML生成関数 ---
+            function createSpotHTML(spot) {
+                return `
+                    <div class="mb-12 grid grid-cols-1 md:grid-cols-[1fr_1.618fr] gap-8 items-center">
+                        <div class="w-full h-64 md:h-auto rounded-lg overflow-hidden shadow-md">
+                            <img src="${spot.image}" alt="${spot.name}" class="theme-image w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <h3 class="text-2xl font-semibold text-brand-indigo mb-3">${spot.name}</h3>
+                            <p class="text-brand-charcoal/90 leading-relaxed mb-6">${spot.description}</p>
+                            <button class="map-link-btn self-start py-2 px-6 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-indigo/40 transition-colors duration-300" data-spot-id="${spot.id}">
+                                地図で場所を確認する
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function createCourseHTML() {
+                let html = '<div class="space-y-12">';
+                for (const courseId in modelCourses) {
+                    const course = modelCourses[courseId];
+                    html += `
+                        <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200" style="background-color: var(--button-bg); transition: background-color 0.5s;">
+                            <h3 class="text-2xl font-semibold text-brand-vermilion mb-3">${course.title}</h3>
+                            <p class="text-brand-charcoal/90 leading-relaxed mb-6">${course.description}</p>
+                            <div class="border-l-2 border-brand-gold pl-6 space-y-4">
+                    `;
+                    course.timeline.forEach(item => {
+                        html += `
+                            <div>
+                                <p class="font-bold text-brand-charcoal">${item.time} - ${item.spot}</p>
+                                <p class="text-sm text-brand-charcoal/80">${item.details}</p>
+                            </div>
+                        `;
+                    });
+                    html += '</div></div>';
+                }
+                html += '</div>';
+                return html;
+            }
+
+            // --- 初期コンテンツ生成 ---
+            const areas = ['bay', 'castle'];
+            areas.forEach(area => {
+                const container = document.getElementById(`${area}-content`);
+                let contentHTML = `<div class="space-y-16">`;
+                Object.values(spots).filter(s => s.area === area).forEach(spot => {
+                    contentHTML += createSpotHTML(spot);
+                });
+                contentHTML += `</div>`;
+                container.innerHTML = contentHTML;
+            });
+            document.getElementById('course-content').innerHTML = createCourseHTML();
+
+
+            // --- マップ関連 ---
+            let map;
+            let markers = {};
+            let mapInitialized = false;
+
+            function initializeMap() {
+                if (mapInitialized) return;
+                
+                map = L.map('map').setView([34.68, 135.50], 12); // 大阪市中心部
+
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                    subdomains: 'abcd',
+                    maxZoom: 20
+                }).addTo(map);
+
+                // マーカーを追加
+                for (const spotId in spots) {
+                    const spot = spots[spotId];
+                    const iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${spot.color}" class="w-8 h-8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`;
+                    
+                    const customIcon = L.divIcon({
+                        html: iconHtml,
+                        className: 'custom-map-icon',
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 24],
+                        popupAnchor: [0, -24]
+                    });
+
+                    const marker = L.marker([spot.lat, spot.lng], { icon: customIcon }).addTo(map);
+                    marker.bindPopup(`
+                        <div class="text-center">
+                            <img src="${spot.image}" alt="${spot.name}" class="w-full h-24 object-cover rounded-md mb-2">
+                            <strong class="text-brand-indigo">${spot.name}</strong>
+                        </div>
+                    `);
+                    markers[spot.id] = marker;
+                }
+                mapInitialized = true;
+            }
+
+            // --- タブ切り替えロジック ---
+            const tabs = document.querySelectorAll('.nav-tab');
+            const contentPanels = document.querySelectorAll('.content-panel');
+
+            function switchTab(tabId) {
+                // タブのアクティブ状態を更新
+                tabs.forEach(t => {
+                    t.classList.toggle('active', t.dataset.tab === tabId);
+                });
+
+                // コンテンツパネルの表示を切り替え
+                contentPanels.forEach(panel => {
+                    panel.classList.toggle('active', panel.id === `${tabId}-content`);
+                });
+
+                if (tabId === 'map') {
+                    initializeMap();
+                    // Leafletのマップが非表示コンテナにあるとサイズ計算がうまくいかないため、表示後に再計算させる
+                    setTimeout(() => map.invalidateSize(), 10); 
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+            });
+
+            // 初期表示タブを設定
+            switchTab('bay');
+
+            // --- 「地図で確認」ボタンのロジック ---
+            document.getElementById('content-area').addEventListener('click', (e) => {
+                if (e.target.classList.contains('map-link-btn')) {
+                    const spotId = e.target.dataset.spotId;
+                    const spot = spots[spotId];
+                    
+                    switchTab('map');
+                    
+                    setTimeout(() => { // マップの表示と初期化を待つ
+                        if (map && markers[spotId]) {
+                            const marker = markers[spotId];
+                            map.setView([spot.lat, spot.lng], 16);
+                            marker.openPopup();
+                            
+                            // アイコンをハイライト
+                            const iconEl = marker._icon;
+                            if (iconEl) {
+                                iconEl.classList.add('highlighted');
+                                setTimeout(() => {
+                                    iconEl.classList.remove('highlighted');
+                                }, 3000); // 3秒後にハイライト解除
+                            }
+                        }
+                    }, 200);
+                }
+            });
+
+            // --- テーマ切替ロジック ---
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const themeButtons = themeSwitcher.querySelectorAll('.theme-btn');
+            const themeIndicator = document.getElementById('theme-indicator');
+
+            function getThemeForTime() {
+                const hour = new Date().getHours();
+                if (hour >= 19 || hour < 5) return 'night';    // 19:00 - 4:59 (夜)
+                return 'day'; // 5:00 - 18:59 (昼)
+            }
+
+            function setTheme(themeName) {
+                document.body.dataset.theme = themeName;
+                let activeBtn = null;
+                themeButtons.forEach(btn => {
+                    const isActive = btn.dataset.theme === themeName;
+                    btn.classList.toggle('active', isActive);
+                    if(isActive) {
+                        activeBtn = btn;
+                    }
+                });
+
+                if (activeBtn) {
+                    const offset = activeBtn.offsetLeft;
+                    themeIndicator.style.transform = `translateX(${offset}px)`;
+                }
+            }
+
+            themeButtons.forEach(btn => {
+                btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+            });
+
+            // 初期テーマは常にライト（day）
+            setTheme('day');
+        });
+    </script>
+
+</body>
+</html>

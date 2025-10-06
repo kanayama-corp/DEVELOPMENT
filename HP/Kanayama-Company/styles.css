@@ -1,3 +1,4 @@
+ 
 /* Font Loading Optimization */
 @font-face {
     font-family: 'Noto Sans JP';
@@ -107,7 +108,7 @@ body {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: white;
+    background-color: #f7fafc; /* blend with about section to hide any perceived gap */
     background-image: url('image/logo.png');
     background-size: contain;
     background-position: center top 0px;
@@ -116,6 +117,8 @@ body {
     overflow: hidden;
     padding-top: 160px;
     padding-left: 5%;
+    padding-bottom: 0; /* remove global section bottom padding to hide gap */
+    
 }
 
 .hero-background-image {
@@ -249,7 +252,16 @@ section {
 /* About Section */
 .about {
     background: #f7fafc;
+    /* Overlap upward to hide any remaining band while preserving content spacing */
+    margin-top: -64px;
+    padding-top: 64px;
+    position: relative;
+    z-index: 1;
 }
+
+/* Prevent the first heading from adding visible space via margin-collapsing */
+.about .section-title { margin-top: 0; }
+
 
 .about-grid {
     display: grid;
@@ -301,7 +313,7 @@ section {
 }
 
 .business-card {
-    background: white;
+    background: #f7fafc; /* match About section background */
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -599,6 +611,35 @@ section {
     background-color: #f8f9fa;
 }
 
+/* Force cosmetics section background to white */
+#cosmetics.product-detail-section,
+#cosmetics {
+    background-color: #ffffff;
+}
+
+/* Match perfume section background to Achievements (取扱商品) */
+#perfume.product-detail-section,
+#perfume {
+    background-color: #f7fafc;
+}
+
+/* Toys section: match perfume background */
+#toys.product-detail-section,
+#toys {
+    background-color: #f7fafc;
+}
+
+/* Daily necessities section: white section background */
+#daily.product-detail-section,
+#daily {
+    background-color: #ffffff;
+}
+
+/* Daily necessities cards: same inner background as cosmetics */
+#daily .product-detail-image {
+    background-color: #f8f9fa;
+}
+
 .product-detail-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -624,9 +665,14 @@ section {
     height: 200px;
     object-fit: contain;
     display: block;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     padding: 10px;
     box-sizing: border-box;
+}
+
+/* Cosmetics section: use previous light gray background inside cards */
+#cosmetics .product-detail-image {
+    background-color: #f8f9fa;
 }
 
 @media (max-width: 768px) {
@@ -643,7 +689,7 @@ section {
 /* Contact Section */
 .contact {
     padding: 4rem 0;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
 }
 
 .contact-grid {
@@ -1059,4 +1105,6 @@ section {
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+}
+
 }

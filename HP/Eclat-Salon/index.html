@@ -27,10 +27,10 @@
     <style>
         /* カスタムスタイル */
         :root {
-            --bg-color: #F7F3EE;
-            --text-dark: #3E372F;
-            --accent-color: #C7A27E;
-            --accent-hover: #b58f6a;
+            --bg-color: #FFFBF7;
+            --text-dark: #5E5E5E;
+            --accent-color: #E8A0A3;
+            --accent-hover: #D98A8E;
         }
 
         body {
@@ -43,11 +43,11 @@
         
         /* セクション背景色 */
         .bg-beige-light {
-            background-color: #F7F3EE;
+            background-color: #FFFBF7;
         }
         
         .bg-beige-lighter {
-            background-color: #FAFAF8;
+            background-color: #FFFDFB;
         }
         
 
@@ -235,15 +235,15 @@
 
         
         .vertical-nav a:hover {
-            color: #C7A27E;
+            color: var(--accent-color);
             background: rgba(255, 255, 255, 0.1);
-            border-left-color: #C7A27E;
+            border-left-color: var(--accent-color);
         }
         
         .vertical-nav a.active {
-            color: #C7A27E;
+            color: var(--accent-color);
             background: rgba(255, 255, 255, 0.15);
-            border-left-color: #C7A27E;
+            border-left-color: var(--accent-color);
             font-weight: 400;
         }
         
@@ -393,10 +393,10 @@
         theme: {
           extend: {
             colors: {
-              'custom-bg': '#F7F3EE',
-              'text-dark': '#3E372F',
-              'accent-color': '#C7A27E',
-              'accent-hover': '#b58f6a',
+              'custom-bg': '#FFFBF7',
+              'text-dark': '#5E5E5E',
+              'accent-color': '#E8A0A3',
+              'accent-hover': '#D98A8E',
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],

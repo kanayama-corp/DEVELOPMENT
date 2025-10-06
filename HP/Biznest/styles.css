@@ -1330,7 +1330,7 @@ body {
 }
 
 .options-note {
-    margin-top: 3rem;
+    margin-top: -50px; /* move up by 50px */
     padding: 2rem;
     background: #f8f9fa;
     border-radius: 10px;

@@ -1176,8 +1176,8 @@ body {
 
 .recommended-badge {
     position: absolute;
-    top: 15px;
-    right: 10px;
+    top: 10px;
+    right: 5px;
     background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     color: white;
     padding: 8px 16px;

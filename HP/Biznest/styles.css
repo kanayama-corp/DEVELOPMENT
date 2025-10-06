@@ -1537,24 +1537,20 @@ body {
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
-    background: white;
-    color: #333;
+    background: #fc7979;
+    color: white;
     padding: 1rem 2rem;
+    border: 2px solid #fc7979;
     border-radius: 12px;
     font-weight: 600;
-    font-size: 1.1rem;
     transition: .3s;
     position: relative;
-    z-index: 2;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    margin-top: 1rem;
-    /* 参考コード準拠の押し込みエフェクト */
-    box-shadow: 5px 5px 0px rgba(200, 200, 200, 0.8);
+    box-shadow: 5px 5px 0px rgba(252, 121, 121, 0.5);
 }
 
 .google-form-btn:hover {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: white;
+    background: #e86d6d;
+    border-color: #e86d6d;
     box-shadow: unset;
     transform: translate(4px, 4px);
 }

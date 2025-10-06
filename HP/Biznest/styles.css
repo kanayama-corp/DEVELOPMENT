@@ -689,19 +689,19 @@ body {
 
 
 .btn-primary {
-    background: white;
-    color: #1f2937;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    background: #fc7979;
+    color: white;
+    border: 2px solid #fc7979;
     font-size: 1.2rem;
     padding: 1rem 2.5rem;
     font-weight: 600;
     /* プライマリボタン用のシャドウ */
-    box-shadow: 5px 5px 0px rgba(200, 200, 200, 0.8);
+    box-shadow: 5px 5px 0px rgba(252, 121, 121, 0.5);
 }
 
 .btn-primary:hover {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: white;
+    background: #e86d6d;
+    border-color: #e86d6d;
     box-shadow: unset;
     transform: translate(4px, 4px);
 }
@@ -731,6 +731,17 @@ body {
     border-color: #4b5563;
     box-shadow: unset;
     transform: translate(4px, 4px);
+}
+
+/* Hero section specific override: make the second button black */
+.hero .btn-dark {
+    background: #000;
+    border-color: #000;
+}
+
+.hero .btn-dark:hover {
+    background: #111827;
+    border-color: #111827;
 }
 
 .hero-buttons {
@@ -1594,27 +1605,23 @@ body {
 }
 
 .btn-outline {
-    background-color: #333;
+    background-color: #fc7979;
     color: white !important;
-    border: 2px solid #333;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    margin-top: 10px;
-    /* 基本スタイルを上書きしてカクつきを防止 */
-    transition: .3s !important;
-    display: inline-block;
-    text-decoration: none;
-    border-radius: 12px;
-    font-weight: 600;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-    /* アウトラインボタン用のシャドウ */
+    border: 2px solid #fc7979;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    transition: all 0.2s ease-in-out !important;
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3) !important;
 }
 
 .btn-outline:hover {
-    background-color: rgba(51, 51, 51, 0.8);
+    background-color: #e86d6d;
     color: white;
     box-shadow: unset !important;
     transform: translate(3px, 3px) !important;

@@ -64,6 +64,100 @@ ul {
     padding: 0 var(--pad-x);
 }
 
+.policy-page {
+    background: var(--c-base);
+}
+
+.policy-main {
+    padding-top: 6rem;
+}
+
+.policy-hero {
+    padding: clamp(5rem, 8vw, 8rem) 0 clamp(2rem, 4vw, 4rem);
+    border-bottom: 1px solid var(--c-line);
+}
+
+.policy-lead {
+    max-width: 860px;
+    color: var(--c-sub-ink);
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    line-height: 2;
+}
+
+.policy-updated {
+    margin-top: 1.5rem;
+    color: var(--c-sub-ink);
+    font-size: 0.9rem;
+}
+
+.policy-content {
+    padding: clamp(3rem, 7vw, 7rem) 0;
+}
+
+.policy-container {
+    max-width: 980px;
+}
+
+.policy-section {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--c-line);
+}
+
+.policy-section:first-child {
+    padding-top: 0;
+}
+
+.policy-section h2 {
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    letter-spacing: 0.04em;
+}
+
+.policy-section p,
+.policy-section li {
+    color: var(--c-sub-ink);
+    line-height: 2;
+}
+
+.policy-section ul {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    padding-left: 1.4rem;
+    list-style: disc;
+}
+
+.policy-contact {
+    margin-top: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--c-sub-base);
+    border: 1px solid var(--c-line);
+}
+
+.policy-contact p {
+    color: var(--c-ink);
+}
+
+.policy-back {
+    margin-top: 3rem;
+}
+
+.policy-back a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--c-ink);
+    font-weight: 500;
+    transition: background 0.25s var(--ease-out-expo), color 0.25s var(--ease-out-expo);
+}
+
+.policy-back a:hover {
+    background: var(--c-ink);
+    color: var(--c-base);
+}
+
 /* =========================================================
    Header / Nav
    ========================================================= */
